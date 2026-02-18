@@ -1,0 +1,1304 @@
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/results.bin b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/results.bin
+new file mode 100644
+index 0000000..7ed749e
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/results.bin
+@@ -0,0 +1 @@
++o/bundleLibRuntimeToDirDebug
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/BuildConfig.dex b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/BuildConfig.dex
+new file mode 100644
+index 0000000..27011be
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/BuildConfig.dex differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerModule$Companion.dex b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerModule$Companion.dex
+new file mode 100644
+index 0000000..7406b36
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerModule$Companion.dex differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerModule.dex b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerModule.dex
+new file mode 100644
+index 0000000..81686b9
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerModule.dex differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerPackage.dex b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerPackage.dex
+new file mode 100644
+index 0000000..d4fbd5d
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/DocumentScannerPackage.dex differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/NativeDocumentScannerSpec.dex b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/NativeDocumentScannerSpec.dex
+new file mode 100644
+index 0000000..d039793
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/documentscanner/NativeDocumentScannerSpec.dex differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
+new file mode 100644
+index 0000000..601f245
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/431387edb7d55695c537e9124a63d787/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/f16a57c55e64886a5017abf166c7b30d/results.bin b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/f16a57c55e64886a5017abf166c7b30d/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/f16a57c55e64886a5017abf166c7b30d/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/.transforms/f16a57c55e64886a5017abf166c7b30d/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/f16a57c55e64886a5017abf166c7b30d/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..56cbac1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/.transforms/f16a57c55e64886a5017abf166c7b30d/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/buildConfig/debug/com/documentscanner/BuildConfig.java b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/buildConfig/debug/com/documentscanner/BuildConfig.java
+new file mode 100644
+index 0000000..d8c09c0
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/buildConfig/debug/com/documentscanner/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.documentscanner;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.documentscanner";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/java/com/documentscanner/NativeDocumentScannerSpec.java b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/java/com/documentscanner/NativeDocumentScannerSpec.java
+new file mode 100644
+index 0000000..42be8bf
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/java/com/documentscanner/NativeDocumentScannerSpec.java
+@@ -0,0 +1,39 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateModuleJavaSpec.js
++ *
++ * @nolint
++ */
++
++package com.documentscanner;
++
++import com.facebook.proguard.annotations.DoNotStrip;
++import com.facebook.react.bridge.Promise;
++import com.facebook.react.bridge.ReactApplicationContext;
++import com.facebook.react.bridge.ReactContextBaseJavaModule;
++import com.facebook.react.bridge.ReactMethod;
++import com.facebook.react.bridge.ReadableMap;
++import com.facebook.react.turbomodule.core.interfaces.TurboModule;
++import javax.annotation.Nonnull;
++
++public abstract class NativeDocumentScannerSpec extends ReactContextBaseJavaModule implements TurboModule {
++  public static final String NAME = "DocumentScanner";
++
++  public NativeDocumentScannerSpec(ReactApplicationContext reactContext) {
++    super(reactContext);
++  }
++
++  @Override
++  public @Nonnull String getName() {
++    return NAME;
++  }
++
++  @ReactMethod
++  @DoNotStrip
++  public abstract void scanDocument(ReadableMap options, Promise promise);
++}
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/CMakeLists.txt b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/CMakeLists.txt
+new file mode 100644
+index 0000000..7c5fb15
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/CMakeLists.txt
+@@ -0,0 +1,28 @@
++# Copyright (c) Meta Platforms, Inc. and affiliates.
++#
++# This source code is licensed under the MIT license found in the
++# LICENSE file in the root directory of this source tree.
++
++cmake_minimum_required(VERSION 3.13)
++set(CMAKE_VERBOSE_MAKEFILE on)
++
++file(GLOB react_codegen_SRCS CONFIGURE_DEPENDS *.cpp react/renderer/components/DocumentScannerSpec/*.cpp)
++
++add_library(
++  react_codegen_DocumentScannerSpec
++  OBJECT
++  ${react_codegen_SRCS}
++)
++
++target_include_directories(react_codegen_DocumentScannerSpec PUBLIC . react/renderer/components/DocumentScannerSpec)
++
++target_link_libraries(
++  react_codegen_DocumentScannerSpec
++  fbjni
++  jsi
++  # We need to link different libraries based on whether we are building rncore or not, that's necessary
++  # because we want to break a circular dependency between react_codegen_rncore and reactnative
++  reactnative
++)
++
++target_compile_reactnative_options(react_codegen_DocumentScannerSpec PRIVATE)
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/DocumentScannerSpec-generated.cpp b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/DocumentScannerSpec-generated.cpp
+new file mode 100644
+index 0000000..a6fb2f3
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/DocumentScannerSpec-generated.cpp
+@@ -0,0 +1,32 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateModuleJniCpp.js
++ */
++
++#include "DocumentScannerSpec.h"
++
++namespace facebook::react {
++
++static facebook::jsi::Value __hostFunction_NativeDocumentScannerSpecJSI_scanDocument(facebook::jsi::Runtime& rt, TurboModule &turboModule, const facebook::jsi::Value* args, size_t count) {
++  static jmethodID cachedMethodId = nullptr;
++  return static_cast<JavaTurboModule &>(turboModule).invokeJavaMethod(rt, PromiseKind, "scanDocument", "(Lcom/facebook/react/bridge/ReadableMap;Lcom/facebook/react/bridge/Promise;)V", args, count, cachedMethodId);
++}
++
++NativeDocumentScannerSpecJSI::NativeDocumentScannerSpecJSI(const JavaTurboModule::InitParams &params)
++  : JavaTurboModule(params) {
++  methodMap_["scanDocument"] = MethodMetadata {1, __hostFunction_NativeDocumentScannerSpecJSI_scanDocument};
++}
++
++std::shared_ptr<TurboModule> DocumentScannerSpec_ModuleProvider(const std::string &moduleName, const JavaTurboModule::InitParams &params) {
++  if (moduleName == "DocumentScanner") {
++    return std::make_shared<NativeDocumentScannerSpecJSI>(params);
++  }
++  return nullptr;
++}
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/DocumentScannerSpec.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/DocumentScannerSpec.h
+new file mode 100644
+index 0000000..7767ae1
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/DocumentScannerSpec.h
+@@ -0,0 +1,31 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateModuleJniH.js
++ */
++
++#pragma once
++
++#include <ReactCommon/JavaTurboModule.h>
++#include <ReactCommon/TurboModule.h>
++#include <jsi/jsi.h>
++
++namespace facebook::react {
++
++/**
++ * JNI C++ class for module 'NativeDocumentScanner'
++ */
++class JSI_EXPORT NativeDocumentScannerSpecJSI : public JavaTurboModule {
++public:
++  NativeDocumentScannerSpecJSI(const JavaTurboModule::InitParams &params);
++};
++
++
++JSI_EXPORT
++std::shared_ptr<TurboModule> DocumentScannerSpec_ModuleProvider(const std::string &moduleName, const JavaTurboModule::InitParams &params);
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ComponentDescriptors.cpp b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ComponentDescriptors.cpp
+new file mode 100644
+index 0000000..b772221
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ComponentDescriptors.cpp
+@@ -0,0 +1,22 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateComponentDescriptorCpp.js
++ */
++
++#include <react/renderer/components/DocumentScannerSpec/ComponentDescriptors.h>
++#include <react/renderer/core/ConcreteComponentDescriptor.h>
++#include <react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
++
++namespace facebook::react {
++
++void DocumentScannerSpec_registerComponentDescriptorsFromCodegen(
++  std::shared_ptr<const ComponentDescriptorProviderRegistry> registry) {
++
++}
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ComponentDescriptors.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ComponentDescriptors.h
+new file mode 100644
+index 0000000..2bf879f
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ComponentDescriptors.h
+@@ -0,0 +1,24 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateComponentDescriptorH.js
++ */
++
++#pragma once
++
++#include <react/renderer/components/DocumentScannerSpec/ShadowNodes.h>
++#include <react/renderer/core/ConcreteComponentDescriptor.h>
++#include <react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
++
++namespace facebook::react {
++
++
++
++void DocumentScannerSpec_registerComponentDescriptorsFromCodegen(
++  std::shared_ptr<const ComponentDescriptorProviderRegistry> registry);
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/DocumentScannerSpecJSI.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/DocumentScannerSpecJSI.h
+new file mode 100644
+index 0000000..b70833f
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/DocumentScannerSpecJSI.h
+@@ -0,0 +1,202 @@
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateModuleH.js
++ */
++
++#pragma once
++
++#include <ReactCommon/TurboModule.h>
++#include <react/bridging/Bridging.h>
++
++namespace facebook::react {
++
++
++#pragma mark - NativeDocumentScannerResponseType
++
++enum class NativeDocumentScannerResponseType { Base64, ImageFilePath };
++
++template <>
++struct Bridging<NativeDocumentScannerResponseType> {
++  static NativeDocumentScannerResponseType fromJs(jsi::Runtime &rt, const jsi::String &rawValue) {
++    std::string value = rawValue.utf8(rt);
++    if (value == "base64") {
++      return NativeDocumentScannerResponseType::Base64;
++    } else if (value == "imageFilePath") {
++      return NativeDocumentScannerResponseType::ImageFilePath;
++    } else {
++      throw jsi::JSError(rt, "No appropriate enum member found for value in NativeDocumentScannerResponseType");
++    }
++  }
++
++  static jsi::String toJs(jsi::Runtime &rt, NativeDocumentScannerResponseType value) {
++    if (value == NativeDocumentScannerResponseType::Base64) {
++      return bridging::toJs(rt, "base64");
++    } else if (value == NativeDocumentScannerResponseType::ImageFilePath) {
++      return bridging::toJs(rt, "imageFilePath");
++    } else {
++      throw jsi::JSError(rt, "No appropriate enum member found for enum value in NativeDocumentScannerResponseType");
++    }
++  }
++};
++
++#pragma mark - NativeDocumentScannerScanDocumentResponseStatus
++
++enum class NativeDocumentScannerScanDocumentResponseStatus { Success, Cancel };
++
++template <>
++struct Bridging<NativeDocumentScannerScanDocumentResponseStatus> {
++  static NativeDocumentScannerScanDocumentResponseStatus fromJs(jsi::Runtime &rt, const jsi::String &rawValue) {
++    std::string value = rawValue.utf8(rt);
++    if (value == "success") {
++      return NativeDocumentScannerScanDocumentResponseStatus::Success;
++    } else if (value == "cancel") {
++      return NativeDocumentScannerScanDocumentResponseStatus::Cancel;
++    } else {
++      throw jsi::JSError(rt, "No appropriate enum member found for value in NativeDocumentScannerScanDocumentResponseStatus");
++    }
++  }
++
++  static jsi::String toJs(jsi::Runtime &rt, NativeDocumentScannerScanDocumentResponseStatus value) {
++    if (value == NativeDocumentScannerScanDocumentResponseStatus::Success) {
++      return bridging::toJs(rt, "success");
++    } else if (value == NativeDocumentScannerScanDocumentResponseStatus::Cancel) {
++      return bridging::toJs(rt, "cancel");
++    } else {
++      throw jsi::JSError(rt, "No appropriate enum member found for enum value in NativeDocumentScannerScanDocumentResponseStatus");
++    }
++  }
++};
++#pragma mark - NativeDocumentScannerScanDocumentOptions
++
++template <typename P0, typename P1, typename P2>
++struct NativeDocumentScannerScanDocumentOptions {
++  P0 croppedImageQuality{};
++  P1 maxNumDocuments{};
++  P2 responseType;
++  bool operator==(const NativeDocumentScannerScanDocumentOptions &other) const {
++    return croppedImageQuality == other.croppedImageQuality && maxNumDocuments == other.maxNumDocuments && responseType == other.responseType;
++  }
++};
++
++template <typename T>
++struct NativeDocumentScannerScanDocumentOptionsBridging {
++  static T types;
++
++  static T fromJs(
++      jsi::Runtime &rt,
++      const jsi::Object &value,
++      const std::shared_ptr<CallInvoker> &jsInvoker) {
++    T result{
++      bridging::fromJs<decltype(types.croppedImageQuality)>(rt, value.getProperty(rt, "croppedImageQuality"), jsInvoker),
++      bridging::fromJs<decltype(types.maxNumDocuments)>(rt, value.getProperty(rt, "maxNumDocuments"), jsInvoker),
++      bridging::fromJs<decltype(types.responseType)>(rt, value.getProperty(rt, "responseType"), jsInvoker)};
++    return result;
++  }
++
++#ifdef DEBUG
++  static double croppedImageQualityToJs(jsi::Runtime &rt, decltype(types.croppedImageQuality) value) {
++    return bridging::toJs(rt, value);
++  }
++  static double maxNumDocumentsToJs(jsi::Runtime &rt, decltype(types.maxNumDocuments) value) {
++    return bridging::toJs(rt, value);
++  }
++  static jsi::String responseTypeToJs(jsi::Runtime &rt, decltype(types.responseType) value) {
++    return bridging::toJs(rt, value);
++  }
++#endif
++
++  static jsi::Object toJs(
++      jsi::Runtime &rt,
++      const T &value,
++      const std::shared_ptr<CallInvoker> &jsInvoker) {
++    auto result = facebook::jsi::Object(rt);
++    if (value.croppedImageQuality) {
++      result.setProperty(rt, "croppedImageQuality", bridging::toJs(rt, value.croppedImageQuality.value(), jsInvoker));
++    }
++    if (value.maxNumDocuments) {
++      result.setProperty(rt, "maxNumDocuments", bridging::toJs(rt, value.maxNumDocuments.value(), jsInvoker));
++    }
++    if (value.responseType) {
++      result.setProperty(rt, "responseType", bridging::toJs(rt, value.responseType.value(), jsInvoker));
++    }
++    return result;
++  }
++};
++
++
++
++#pragma mark - NativeDocumentScannerScanDocumentResponse
++
++template <typename P0, typename P1>
++struct NativeDocumentScannerScanDocumentResponse {
++  P0 scannedImages{};
++  P1 status;
++  bool operator==(const NativeDocumentScannerScanDocumentResponse &other) const {
++    return scannedImages == other.scannedImages && status == other.status;
++  }
++};
++
++template <typename T>
++struct NativeDocumentScannerScanDocumentResponseBridging {
++  static T types;
++
++  static T fromJs(
++      jsi::Runtime &rt,
++      const jsi::Object &value,
++      const std::shared_ptr<CallInvoker> &jsInvoker) {
++    T result{
++      bridging::fromJs<decltype(types.scannedImages)>(rt, value.getProperty(rt, "scannedImages"), jsInvoker),
++      bridging::fromJs<decltype(types.status)>(rt, value.getProperty(rt, "status"), jsInvoker)};
++    return result;
++  }
++
++#ifdef DEBUG
++  static jsi::Array scannedImagesToJs(jsi::Runtime &rt, decltype(types.scannedImages) value) {
++    return bridging::toJs(rt, value);
++  }
++  static jsi::String statusToJs(jsi::Runtime &rt, decltype(types.status) value) {
++    return bridging::toJs(rt, value);
++  }
++#endif
++
++  static jsi::Object toJs(
++      jsi::Runtime &rt,
++      const T &value,
++      const std::shared_ptr<CallInvoker> &jsInvoker) {
++    auto result = facebook::jsi::Object(rt);
++    if (value.scannedImages) {
++      result.setProperty(rt, "scannedImages", bridging::toJs(rt, value.scannedImages.value(), jsInvoker));
++    }
++    if (value.status) {
++      result.setProperty(rt, "status", bridging::toJs(rt, value.status.value(), jsInvoker));
++    }
++    return result;
++  }
++};
++
++
++template <typename T>
++class JSI_EXPORT NativeDocumentScannerCxxSpec : public TurboModule {
++public:
++  static constexpr std::string_view kModuleName = "DocumentScanner";
++
++protected:
++  NativeDocumentScannerCxxSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule(std::string{NativeDocumentScannerCxxSpec::kModuleName}, jsInvoker) {
++    methodMap_["scanDocument"] = MethodMetadata {.argCount = 1, .invoker = __scanDocument};
++  }
++  
++private:
++  static jsi::Value __scanDocument(jsi::Runtime &rt, TurboModule &turboModule, const jsi::Value* args, size_t count) {
++    static_assert(
++      bridging::getParameterCount(&T::scanDocument) == 2,
++      "Expected scanDocument(...) to have 2 parameters");
++    return bridging::callFromJs<jsi::Value>(rt, &T::scanDocument,  static_cast<NativeDocumentScannerCxxSpec*>(&turboModule)->jsInvoker_, static_cast<T*>(&turboModule),
++      count <= 0 ? throw jsi::JSError(rt, "Expected argument in position 0 to be passed") : args[0].asObject(rt));
++  }
++};
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/EventEmitters.cpp b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/EventEmitters.cpp
+new file mode 100644
+index 0000000..02c26dd
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/EventEmitters.cpp
+@@ -0,0 +1,16 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateEventEmitterCpp.js
++ */
++
++#include <react/renderer/components/DocumentScannerSpec/EventEmitters.h>
++
++
++namespace facebook::react {
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/EventEmitters.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/EventEmitters.h
+new file mode 100644
+index 0000000..2845a63
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/EventEmitters.h
+@@ -0,0 +1,17 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateEventEmitterH.js
++ */
++#pragma once
++
++#include <react/renderer/components/view/ViewEventEmitter.h>
++
++
++namespace facebook::react {
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/Props.cpp b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/Props.cpp
+new file mode 100644
+index 0000000..a273bd2
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/Props.cpp
+@@ -0,0 +1,19 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GeneratePropsCpp.js
++ */
++
++#include <react/renderer/components/DocumentScannerSpec/Props.h>
++#include <react/renderer/core/PropsParserContext.h>
++#include <react/renderer/core/propsConversions.h>
++
++namespace facebook::react {
++
++
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/Props.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/Props.h
+new file mode 100644
+index 0000000..870864b
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/Props.h
+@@ -0,0 +1,18 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GeneratePropsH.js
++ */
++#pragma once
++
++
++
++namespace facebook::react {
++
++
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ShadowNodes.cpp b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ShadowNodes.cpp
+new file mode 100644
+index 0000000..018ed65
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ShadowNodes.cpp
+@@ -0,0 +1,17 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateShadowNodeCpp.js
++ */
++
++#include <react/renderer/components/DocumentScannerSpec/ShadowNodes.h>
++
++namespace facebook::react {
++
++
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ShadowNodes.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ShadowNodes.h
+new file mode 100644
+index 0000000..fca2e46
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/ShadowNodes.h
+@@ -0,0 +1,23 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateShadowNodeH.js
++ */
++
++#pragma once
++
++#include <react/renderer/components/DocumentScannerSpec/EventEmitters.h>
++#include <react/renderer/components/DocumentScannerSpec/Props.h>
++#include <react/renderer/components/DocumentScannerSpec/States.h>
++#include <react/renderer/components/view/ConcreteViewShadowNode.h>
++#include <jsi/jsi.h>
++
++namespace facebook::react {
++
++
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/States.cpp b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/States.cpp
+new file mode 100644
+index 0000000..005cf82
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/States.cpp
+@@ -0,0 +1,16 @@
++
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateStateCpp.js
++ */
++#include <react/renderer/components/DocumentScannerSpec/States.h>
++
++namespace facebook::react {
++
++
++
++} // namespace facebook::react
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/States.h b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/States.h
+new file mode 100644
+index 0000000..2e55bce
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/jni/react/renderer/components/DocumentScannerSpec/States.h
+@@ -0,0 +1,20 @@
++/**
++ * This code was generated by [react-native-codegen](https://www.npmjs.com/package/react-native-codegen).
++ *
++ * Do not edit this file as changes may cause incorrect behavior and will be lost
++ * once the code is regenerated.
++ *
++ * @generated by codegen project: GenerateStateH.js
++ */
++#pragma once
++
++#include <react/renderer/core/StateData.h>
++#ifdef RN_SERIALIZABLE_STATE
++#include <folly/dynamic.h>
++#endif
++
++namespace facebook::react {
++
++
++
++} // namespace facebook::react
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/schema.json b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/schema.json
+new file mode 100644
+index 0000000..960a3f8
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/generated/source/codegen/schema.json
+@@ -0,0 +1 @@
++{"libraryName":"","modules":{"NativeDocumentScanner":{"type":"NativeModule","aliasMap":{"ScanDocumentOptions":{"type":"ObjectTypeAnnotation","properties":[{"name":"croppedImageQuality","optional":true,"typeAnnotation":{"type":"NumberTypeAnnotation"}},{"name":"maxNumDocuments","optional":true,"typeAnnotation":{"type":"NumberTypeAnnotation"}},{"name":"responseType","optional":true,"typeAnnotation":{"name":"ResponseType","type":"EnumDeclaration","memberType":"StringTypeAnnotation"}}]},"ScanDocumentResponse":{"type":"ObjectTypeAnnotation","properties":[{"name":"scannedImages","optional":true,"typeAnnotation":{"type":"ArrayTypeAnnotation","elementType":{"type":"StringTypeAnnotation"}}},{"name":"status","optional":true,"typeAnnotation":{"name":"ScanDocumentResponseStatus","type":"EnumDeclaration","memberType":"StringTypeAnnotation"}}]}},"enumMap":{"ResponseType":{"name":"ResponseType","type":"EnumDeclarationWithMembers","memberType":"StringTypeAnnotation","members":[{"name":"Base64","value":{"type":"StringLiteralTypeAnnotation","value":"base64"}},{"name":"ImageFilePath","value":{"type":"StringLiteralTypeAnnotation","value":"imageFilePath"}}]},"ScanDocumentResponseStatus":{"name":"ScanDocumentResponseStatus","type":"EnumDeclarationWithMembers","memberType":"StringTypeAnnotation","members":[{"name":"Success","value":{"type":"StringLiteralTypeAnnotation","value":"success"}},{"name":"Cancel","value":{"type":"StringLiteralTypeAnnotation","value":"cancel"}}]}},"spec":{"eventEmitters":[],"methods":[{"name":"scanDocument","optional":false,"typeAnnotation":{"type":"FunctionTypeAnnotation","returnTypeAnnotation":{"type":"PromiseTypeAnnotation","elementType":{"type":"TypeAliasTypeAnnotation","name":"ScanDocumentResponse"}},"params":[{"name":"options","optional":false,"typeAnnotation":{"type":"TypeAliasTypeAnnotation","name":"ScanDocumentOptions"}}]}}]},"moduleName":"DocumentScanner"}}}
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..cc88ebb
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.documentscanner" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..f7b9155
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.documentscanner",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
+new file mode 100644
+index 0000000..b9e48b5
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..cb56f4e
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..bdd4851
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Wed Feb 18 16:37:11 IST 2026
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..d284452
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugAssets/merger.xml b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+new file mode 100644
+index 0000000..c61256b
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..bf59e50
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..72930d0
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/react-native-document-scanner-plugin_debug.kotlin_module b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/react-native-document-scanner-plugin_debug.kotlin_module
+new file mode 100644
+index 0000000..9dbc290
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/java_res/debug/processDebugJavaRes/out/META-INF/react-native-document-scanner-plugin_debug.kotlin_module differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/documentscanner/BuildConfig.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/documentscanner/BuildConfig.class
+new file mode 100644
+index 0000000..990962e
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/documentscanner/BuildConfig.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/documentscanner/NativeDocumentScannerSpec.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/documentscanner/NativeDocumentScannerSpec.class
+new file mode 100644
+index 0000000..c33f10a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/documentscanner/NativeDocumentScannerSpec.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..78ac5b8
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,2 @@
++R_DEF: Internal format may change without notice
++local
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..b03b0cc
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,7 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="com.documentscanner" >
++4
++5    <uses-sdk android:minSdkVersion="24" />
++6
++7</manifest>
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..cc88ebb
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.documentscanner" >
++
++    <uses-sdk android:minSdkVersion="24" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/META-INF/react-native-document-scanner-plugin_debug.kotlin_module b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/META-INF/react-native-document-scanner-plugin_debug.kotlin_module
+new file mode 100644
+index 0000000..9dbc290
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/META-INF/react-native-document-scanner-plugin_debug.kotlin_module differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/BuildConfig.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/BuildConfig.class
+new file mode 100644
+index 0000000..990962e
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/BuildConfig.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerModule$Companion.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerModule$Companion.class
+new file mode 100644
+index 0000000..aa5c414
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerModule$Companion.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerModule.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerModule.class
+new file mode 100644
+index 0000000..e43a57a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerModule.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerPackage.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerPackage.class
+new file mode 100644
+index 0000000..8c43db0
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/DocumentScannerPackage.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/NativeDocumentScannerSpec.class b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/NativeDocumentScannerSpec.class
+new file mode 100644
+index 0000000..c33f10a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/documentscanner/NativeDocumentScannerSpec.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
+new file mode 100644
+index 0000000..e86cb1a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..463fb0c
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1 @@
++com.documentscanner
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab
+new file mode 100644
+index 0000000..f75e31d
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream
+new file mode 100644
+index 0000000..bdd0b80
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len
+new file mode 100644
+index 0000000..8f5cb80
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at
+new file mode 100644
+index 0000000..1204e98
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i
+new file mode 100644
+index 0000000..8adaefc
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab
+new file mode 100644
+index 0000000..08ace1b
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream
+new file mode 100644
+index 0000000..fd235d5
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len
+new file mode 100644
+index 0000000..14f7c06
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at
+new file mode 100644
+index 0000000..fe23964
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i
+new file mode 100644
+index 0000000..e7e2a14
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab
+new file mode 100644
+index 0000000..8823404
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..fd235d5
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..14f7c06
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..796eca9
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i
+new file mode 100644
+index 0000000..e7e2a14
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab
+new file mode 100644
+index 0000000..bdf584a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream
+new file mode 100644
+index 0000000..93b1493
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len
+new file mode 100644
+index 0000000..25c4d2f
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len
+new file mode 100644
+index 0000000..2a17e6e
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at
+new file mode 100644
+index 0000000..a0df187
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i
+new file mode 100644
+index 0000000..6c6a375
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/constants.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab
+new file mode 100644
+index 0000000..8823404
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream
+new file mode 100644
+index 0000000..21ac0e8
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len
+new file mode 100644
+index 0000000..14f7c06
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len
+new file mode 100644
+index 0000000..a9f80ae
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at
+new file mode 100644
+index 0000000..796eca9
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i
+new file mode 100644
+index 0000000..220fba4
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab
+new file mode 100644
+index 0000000..040845f
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream
+new file mode 100644
+index 0000000..f42c40d
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len
+new file mode 100644
+index 0000000..c14ff15
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len
+new file mode 100644
+index 0000000..93a595b
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at
+new file mode 100644
+index 0000000..54137bb
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i
+new file mode 100644
+index 0000000..b15b4af
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab
+new file mode 100644
+index 0000000..9593721
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream
+new file mode 100644
+index 0000000..bdd0b80
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len
+new file mode 100644
+index 0000000..8f5cb80
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at
+new file mode 100644
+index 0000000..9d0502d
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i
+new file mode 100644
+index 0000000..8adaefc
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab
+new file mode 100644
+index 0000000..776b043
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream
+new file mode 100644
+index 0000000..52c25e8
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len
+new file mode 100644
+index 0000000..75ae93b
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at
+new file mode 100644
+index 0000000..8364a1a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i
+new file mode 100644
+index 0000000..cd77e40
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab
+new file mode 100644
+index 0000000..b5b544e
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream
+new file mode 100644
+index 0000000..8c76ae9
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len
+new file mode 100644
+index 0000000..1cf91b4
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at
+new file mode 100644
+index 0000000..e0dba51
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i
+new file mode 100644
+index 0000000..f5e2467
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+new file mode 100644
+index 0000000..2ceb12b
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/counters.tab
+@@ -0,0 +1,2 @@
++2
++0
+\ No newline at end of file
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab
+new file mode 100644
+index 0000000..3b8bb96
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream
+new file mode 100644
+index 0000000..bdd0b80
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len
+new file mode 100644
+index 0000000..8f5cb80
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at
+new file mode 100644
+index 0000000..7d30a43
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i
+new file mode 100644
+index 0000000..8adaefc
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab
+new file mode 100644
+index 0000000..ba52634
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream
+new file mode 100644
+index 0000000..100d205
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len
+new file mode 100644
+index 0000000..ccfcbf4
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len
+new file mode 100644
+index 0000000..01bdaa1
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at
+new file mode 100644
+index 0000000..cf952f2
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i
+new file mode 100644
+index 0000000..f768a77
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab
+new file mode 100644
+index 0000000..72c5245
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream
+new file mode 100644
+index 0000000..3e4e2d5
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len
+new file mode 100644
+index 0000000..37d512a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len
+new file mode 100644
+index 0000000..df00cd8
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at
+new file mode 100644
+index 0000000..61898c0
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i
+new file mode 100644
+index 0000000..120a2a6
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len
+new file mode 100644
+index 0000000..131e265
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin
+new file mode 100644
+index 0000000..cf9c7bd
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/cacheable/last-build.bin differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+new file mode 100644
+index 0000000..09d35b0
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+new file mode 100644
+index 0000000..aa4dbeb
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/kotlin/compileDebugKotlin/local-state/build-history.bin differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-document-scanner-plugin/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..104aac2
+--- /dev/null
++++ b/node_modules/react-native-document-scanner-plugin/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,16 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml:1:1-2:12
++INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml:1:1-2:12
++	package
++		INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml
++	xmlns:android
++		ADDED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml:1:11-69
++uses-sdk
++INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml
++INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/aryannn/kuberya/evaluator/node_modules/react-native-document-scanner-plugin/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-document-scanner-plugin/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..673f702
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/META-INF/react-native-document-scanner-plugin_debug.kotlin_module b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/META-INF/react-native-document-scanner-plugin_debug.kotlin_module
+new file mode 100644
+index 0000000..9dbc290
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/META-INF/react-native-document-scanner-plugin_debug.kotlin_module differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerModule$Companion.class b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerModule$Companion.class
+new file mode 100644
+index 0000000..aa5c414
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerModule$Companion.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerModule.class b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerModule.class
+new file mode 100644
+index 0000000..e43a57a
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerModule.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerPackage.class b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerPackage.class
+new file mode 100644
+index 0000000..8c43db0
+Binary files /dev/null and b/node_modules/react-native-document-scanner-plugin/android/build/tmp/kotlin-classes/debug/com/documentscanner/DocumentScannerPackage.class differ
+diff --git a/node_modules/react-native-document-scanner-plugin/android/src/main/java/com/documentscanner/DocumentScannerModule.kt b/node_modules/react-native-document-scanner-plugin/android/src/main/java/com/documentscanner/DocumentScannerModule.kt
+index fbb6836..e75b6b2 100644
+--- a/node_modules/react-native-document-scanner-plugin/android/src/main/java/com/documentscanner/DocumentScannerModule.kt
++++ b/node_modules/react-native-document-scanner-plugin/android/src/main/java/com/documentscanner/DocumentScannerModule.kt
+@@ -51,7 +51,7 @@ class DocumentScannerModule(reactContext: ReactApplicationContext) :
+ 
+     val documentScannerOptionsBuilder = GmsDocumentScannerOptions.Builder()
+       .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
+-      .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
++      .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_BASE)
+ 
+     if (options.hasKey("maxNumDocuments")) {
+       documentScannerOptionsBuilder.setPageLimit(
