@@ -1,0 +1,39 @@
+diff --git a/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java b/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java
+index 9168507..b6883a7 100644
+--- a/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java
++++ b/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java
+@@ -10,6 +10,7 @@ package org.wonday.pdf;
+ 
+ import java.io.File;
+ import java.io.IOException;
++import java.io.FileNotFoundException;
+ 
+ import android.content.ContentResolver;
+ import android.content.Context;
+@@ -178,10 +179,11 @@ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompl
+     @Override
+     public void onError(Throwable t){
+         WritableMap event = Arguments.createMap();
+-        if (t.getMessage().contains("Password required or incorrect password")) {
++        String message = t.getMessage() != null ? t.getMessage() : t.toString();
++        if (message.contains("Password required or incorrect password")) {
+             event.putString("message", "error|Password required or incorrect password.");
+         } else {
+-            event.putString("message", "error|"+t.getMessage());
++            event.putString("message", "error|" + message);
+         }
+ 
+         ThemedReactContext context = (ThemedReactContext) getContext();
+@@ -313,8 +315,10 @@ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompl
+                 Uri uri = Uri.parse(this.path);
+                 try {
+                     inputStream = contentResolver.openInputStream(uri);
+-                } catch (FileNotFoundException e) {
+-                    throw new RuntimeException(e.getMessage());
++                } catch (Exception e) {
++                    this.loadComplete(0);
++                    this.onError(e);
++                    return;
+                 }
+                 configurator = this.fromStream(inputStream);
+             } else {

@@ -16,11 +16,7 @@ export const RootNavigator: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-    useEffect(() => {
-        checkAuthStatus();
-    }, []);
-
-    const checkAuthStatus = async () => {
+    const checkAuthStatus = React.useCallback(async () => {
         try {
             const token = await storage.getAuthToken();
             const userData = await storage.getUserData();
@@ -33,7 +29,11 @@ export const RootNavigator: React.FC = () => {
         } finally {
             setIsCheckingAuth(false);
         }
-    };
+    }, [dispatch]);
+
+    useEffect(() => {
+        checkAuthStatus();
+    }, [checkAuthStatus]);
 
     if (isCheckingAuth) {
         return <Loader />;

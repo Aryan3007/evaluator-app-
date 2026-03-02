@@ -1,28 +1,6 @@
 PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
-  - DocumentScanner (2.0.4):
-    - hermes-engine
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-Core-prebuilt
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - ReactNativeDependencies
-    - Yoga
   - FBLazyVector (0.84.0)
   - hermes-engine (250829098.0.7):
     - hermes-engine/Pre-built (= 250829098.0.7)
@@ -1495,6 +1473,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-print (0.11.0):
+    - React-Core
   - react-native-safe-area-context (5.6.2):
     - hermes-engine
     - RCTRequired
@@ -2190,7 +2170,6 @@ PODS:
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
-  - DocumentScanner (from `../node_modules/react-native-document-scanner-plugin`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -2235,6 +2214,7 @@ DEPENDENCIES:
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-keyevent (from `../node_modules/react-native-keyevent`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
+  - react-native-print (from `../node_modules/react-native-print`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-volume-manager (from `../node_modules/react-native-volume-manager`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -2290,8 +2270,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
-  DocumentScanner:
-    :path: "../node_modules/react-native-document-scanner-plugin"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   hermes-engine:
@@ -2379,6 +2357,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyevent"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
+  react-native-print:
+    :path: "../node_modules/react-native-print"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-volume-manager:
@@ -2474,7 +2454,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
-  DocumentScanner: 8409e7cb95cfea9c445c36886c4adc9a927973aa
   FBLazyVector: c12d2108050e27952983d565a232f6f7b1ad5e69
   hermes-engine: 81a5ed5d243bd7f746f4ae80ddfbe283cdcf22d2
   Mute: 20135a96076f140cc82bfc8b810e2d6150d8ec7e
@@ -2519,6 +2498,7 @@ SPEC CHECKSUMS:
   react-native-image-resizer: 17b2d73c030975b6543395c7e7368bc8774c5efa
   react-native-keyevent: b546896a528d3f4afe4fa3c89b82748dfdfcc2c1
   react-native-pdf: 70836b3b48595c7f85a3aa2b5d122b175c455733
+  react-native-print: 692e8782bc89872ea01738c6759631388e77358c
   react-native-safe-area-context: 37e680fc4cace3c0030ee46e8987d24f5d3bdab2
   react-native-volume-manager: cdd3c3857158c1df7b9fbea071a9946395cee06c
   React-NativeModulesApple: 44a9474594566cd03659f92e38f42599c6b9dee4

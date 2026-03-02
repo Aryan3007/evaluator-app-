@@ -39,9 +39,9 @@ export const ImageViewerModal: React.FC<Props> = ({ visible, imageUri, onClose, 
     };
 
     return (
-        <Modal visible={visible} transparent={false} animationType="slide" onRequestClose={onClose}>
+        <Modal visible={visible} transparent={false} animationType="slide" onRequestClose={onClose} statusBarTranslucent>
             <View style={styles.container}>
-                <StatusBar barStyle="light-content" backgroundColor="black" />
+                <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
                 <View style={styles.topBar}>
                     <TouchableOpacity onPress={onClose} style={styles.iconButton}>

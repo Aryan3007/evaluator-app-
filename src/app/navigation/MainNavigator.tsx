@@ -6,6 +6,8 @@ import { DetailsScreen } from '../../features/evaluator/DetailsScreen';
 import EvaluatorSetupScreen from '../../features/evaluator/EvaluatorSetupScreen';
 import CameraScreen from '../../features/scanning/camera/CameraScreen';
 import ScanningScreen from '../../features/scanning/ScanningScreen';
+import PdfPreviewScreen from '../../features/scanning/preview/PdfPreviewScreen';
+import PreviewScreen from '../../features/scanning/preview/PreviewModal';
 import { ReportScreen } from '../../features/evaluator/ReportScreen';
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +31,8 @@ export const MainNavigator: React.FC = () => {
             {/* Scanning Screens */}
             <Stack.Screen name="Scanning" component={ScanningScreen} />
             <Stack.Screen name="CameraScreen" component={CameraScreen} />
+            <Stack.Screen name="PdfPreview" component={PdfPreviewScreen} />
+            <Stack.Screen name="ImagePreview" component={PreviewScreen} />
         </Stack.Navigator>
     );
 };

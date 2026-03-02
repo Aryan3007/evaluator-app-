@@ -6,20 +6,17 @@ import {
     ScrollView,
     TouchableOpacity,
     ActivityIndicator,
-    Share,
     Alert,
-    Platform,
     StatusBar,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { colors } from '../../theme/colors';
-import { spacing, borderRadius } from '../../theme/spacing';
-import { typography } from '../../theme/typography';
+
 import { fetchEvaluationReport } from '../../core/redux/evaluatorSlice';
 import { ApiEvaluationAnswer } from '../../core/redux/types';
-import { CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Copy, Share2, Printer, Star, ArrowLeft, Download, FileText } from 'lucide-react-native';
+import { CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Copy, Star, ArrowLeft, Download } from 'lucide-react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import ReactNativeBlobUtil from 'react-native-blob-util';
+import RNPrint from 'react-native-print';
 // import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -30,8 +27,9 @@ export const ReportScreen: React.FC<{ navigation: any; route: any }> = ({
     const { sheetId } = route.params;
     const dispatch = useDispatch<any>();
     const insets = useSafeAreaInsets();
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-    const { currentReport, reportLoading, reportError, answerSheets } = useSelector((state: any) => state.evaluator);
+    const { currentReport, reportLoading, reportError } = useSelector((state: any) => state.evaluator);
 
     useEffect(() => {
         if (sheetId) {
@@ -44,60 +42,136 @@ export const ReportScreen: React.FC<{ navigation: any; route: any }> = ({
         Alert.alert('Copied', 'Model answer copied to clipboard');
     };
 
-    const handleShare = async () => {
-        try {
-            await Share.share({
-                message: `Evaluation Report for ${currentReport?.student_name || 'Student'}. Score: ${currentReport?.overall_score}/${currentReport?.max_score}`,
-            });
-        } catch (error: any) {
-            Alert.alert(error.message);
-        }
-    };
-
     const handleDownload = async () => {
-        let url = currentReport?.s3_url || currentReport?.file_url;
-
-        // Fallback: Check answerSheets if URL is missing in the report
-        if (!url && answerSheets && answerSheets.length > 0) {
-            const sheet = answerSheets.find((s: any) => s.id === currentReport?.file_id || s.file_id === currentReport?.file_id);
-            if (sheet) {
-                url = sheet.s3Url || sheet.s3_url;
-            }
-        }
-
-        if (!url) {
-            Alert.alert('Error', 'Download URL not available');
+        if (!currentReport) {
+            Alert.alert('Error', 'Report data not available');
             return;
         }
 
+        setIsGeneratingPdf(true);
         try {
-            const { dirs } = ReactNativeBlobUtil.fs;
-            const fileName = currentReport.file_name || `report_${sheetId}.pdf`;
-            const path = Platform.OS === 'ios' ? dirs.DocumentDir + '/' + fileName : dirs.DownloadDir + '/' + fileName;
+            // Build the HTML template
+            let htmlContent = `
+                <html>
+                <head>
+                    <style>
+                        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; padding: 40px; }
+                        .header { text-align: center; border-bottom: 2px solid #primary; padding-bottom: 20px; margin-bottom: 30px; }
+                        .title { font-size: 28px; font-weight: bold; color: #111; margin: 0; }
+                        .subtitle { font-size: 16px; color: #666; margin-top: 5px; }
+                        .student-info { display: flex; justify-content: space-between; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+                        .info-label { font-size: 12px; color: #666; text-transform: uppercase; margin: 0; }
+                        .info-value { font-size: 20px; font-weight: bold; margin: 4px 0 0 0; }
+                        .stats-row { display: flex; justify-content: space-around; margin-bottom: 40px; }
+                        .stat-box { text-align: center; }
+                        .stat-val { font-size: 36px; font-weight: bold; color: #4CAF50; }
+                        .stat-label { font-size: 14px; color: #666; text-transform: uppercase; }
+                        .section-title { font-size: 20px; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin: 40px 0 20px 0; }
+                        .question-card { background: #fff; border: 1px solid #eee; border-radius: 8px; margin-bottom: 20px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); page-break-inside: avoid; break-inside: avoid; -webkit-region-break-inside: avoid; }
+                        .q-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+                        .q-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin: 0 0 5px 0; }
+                        .q-text { font-size: 16px; color: #222; margin: 0; line-height: 1.5; }
+                        .mark-badge { background: #E8F5E9; color: #2E7D32; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 16px; min-width: 60px; text-align: center; }
+                        .feedback-box { background: #f1f8e9; padding: 15px; border-radius: 6px; margin-bottom: 15px; page-break-inside: avoid; break-inside: avoid; }
+                        .feedback-warning { background: #fff8e1; }
+                        .f-title { font-weight: bold; font-size: 14px; text-transform: uppercase; margin: 0 0 10px 0; }
+                        .f-point { margin: 5px 0; font-size: 14px; color: #444; }
+                        .model-answer { background: #f5f5f5; padding: 15px; border-radius: 6px; border-left: 4px solid #9e9e9e; page-break-inside: avoid; break-inside: avoid; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1 class="title">Evaluation Report</h1>
+                        <p class="subtitle">Generated on ${new Date().toLocaleDateString()}</p>
+                    </div>
 
-            ReactNativeBlobUtil.config({
-                fileCache: true,
-                path: path,
-                addAndroidDownloads: {
-                    useDownloadManager: true,
-                    notification: true,
-                    mediaScannable: true,
-                    title: fileName,
-                    path: path,
-                }
-            })
-                .fetch('GET', url)
-                .then((res) => {
-                    Alert.alert('Success', 'File downloaded successfully');
-                    if (Platform.OS === 'ios') {
-                        ReactNativeBlobUtil.ios.openDocument(res.data());
+                    <div class="student-info">
+                        <div>
+                            <p class="info-label">Student Name</p>
+                            <p class="info-value">${currentReport.student_name || 'Unknown'}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p class="info-label">Roll Number</p>
+                            <p class="info-value">${currentReport.student_roll_number || 'N/A'}</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-val" style="color: #4CAF50;">
+                                ${currentReport.overall_score} <span style="font-size: 20px; color: #888;">/ ${currentReport.max_score || 0}</span>
+                            </div>
+                            <div class="stat-label">Marks Scored</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-val" style="color: #FF9800;">
+                                ${currentReport.percentage ? Math.round(currentReport.percentage) : 0}%
+                            </div>
+                            <div class="stat-label">Final Result</div>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">Detailed Analysis</h2>
+            `;
+
+            if (currentReport.answers && currentReport.answers.length > 0) {
+                currentReport.answers.forEach((ans: ApiEvaluationAnswer, index: number) => {
+                    const isCorrect = ans.marks_obtained >= ans.max_marks;
+                    const badgeStyle = isCorrect ? 'background: #E8F5E9; color: #2E7D32;' : (ans.marks_obtained > 0 ? 'background: #FFF3E0; color: #E65100;' : 'background: #FFEBEE; color: #C62828;');
+
+                    htmlContent += `
+                    <div class="question-card">
+                        <div class="q-header">
+                            <div>
+                                <p class="q-title">Question ${ans.question_number || index + 1}</p>
+                                <p class="q-text">${ans.question_text}</p>
+                            </div>
+                            <div class="mark-badge" style="${badgeStyle}">
+                                ${ans.marks_obtained} / ${ans.max_marks}
+                            </div>
+                        </div>
+                    `;
+
+                    if (ans.strengths && ans.strengths.length > 0) {
+                        htmlContent += `
+                        <div class="feedback-box">
+                            <p class="f-title" style="color: #2E7D32;">Strengths</p>
+                            ${ans.strengths.map((s: string) => `<p class="f-point">• ${s}</p>`).join('')}
+                        </div>`;
                     }
-                })
-                .catch((err) => {
-                    Alert.alert('Error', 'Download failed: ' + err.message);
+
+                    if (ans.improvements && ans.improvements.length > 0) {
+                        htmlContent += `
+                        <div class="feedback-box feedback-warning">
+                            <p class="f-title" style="color: #E65100;">Areas for Improvement</p>
+                            ${ans.improvements.map((i: string) => `<p class="f-point">• ${i}</p>`).join('')}
+                        </div>`;
+                    }
+
+                    htmlContent += `
+                        <div class="model-answer">
+                            <p class="f-title" style="color: #616161;">Model Answer</p>
+                            <p class="f-point">${ans.model_answer}</p>
+                        </div>
+                    </div>`;
                 });
+            }
+
+            htmlContent += `
+                </body>
+                </html>
+            `;
+
+            // With RNPrint, we simply pass the HTML string and it opens the native device's Print/Save dialog natively
+            await RNPrint.print({
+                html: htmlContent
+            });
+
         } catch (error: any) {
-            Alert.alert('Error', 'Download failed');
+            console.error("PDF Gen Error: ", error);
+            Alert.alert('Error', 'Failed to generate PDF document');
+        } finally {
+            setIsGeneratingPdf(false);
         }
     };
 
@@ -139,8 +213,12 @@ export const ReportScreen: React.FC<{ navigation: any; route: any }> = ({
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Evaluation Report</Text>
                 <View style={{ flexDirection: 'row', gap: 8 }}>
-                    <TouchableOpacity onPress={handleDownload} style={styles.iconButton}>
-                        <Download size={24} color={colors.white} />
+                    <TouchableOpacity onPress={handleDownload} style={styles.iconButton} disabled={isGeneratingPdf}>
+                        {isGeneratingPdf ? (
+                            <ActivityIndicator color={colors.white} size="small" />
+                        ) : (
+                            <Download size={24} color={colors.white} />
+                        )}
                     </TouchableOpacity>
 
                 </View>

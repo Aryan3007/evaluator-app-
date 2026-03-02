@@ -5,37 +5,34 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
-    Modal,
-    SafeAreaView,
     ActivityIndicator,
     Alert,
-    StatusBar
+    StatusBar,
+    BackHandler
 } from 'react-native';
-import { FileText, X, Plus, Trash2, Upload } from 'lucide-react-native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { FileText, Plus, Trash2, Upload, ChevronLeft } from 'lucide-react-native';
 import DocumentPicker from 'react-native-document-picker';
-import { uploadFiles } from '../../../core/api/scanning.api';
+import RNFS from 'react-native-fs';
+import { uploadFiles } from '../../../core/redux/scanningSlice';
 import { useAppDispatch, useAppSelector } from '../../../core/hooks/useRedux';
 import { colors } from '../../../theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PdfViewerModal } from '../components/PdfViewerModal';
+import Toast from 'react-native-toast-message';
 
-interface PdfPreviewModalProps {
-    isOpen: boolean;
-    files: any[];
-    onClose: () => void;
-    onBack: () => void;
-    subjectName?: string;
-    subjectCode?: string;
-}
+export const PdfPreviewScreen: React.FC = () => {
+    const navigation = useNavigation<any>();
+    const route = useRoute<any>();
 
-export const PdfPreviewModal: React.FC<PdfPreviewModalProps> = ({
-    isOpen,
-    files,
-    onClose,
-    onBack,
-    subjectName = 'Scanned Document',
-    subjectCode = 'SCAN-001'
-}) => {
+    // Extract everything that used to be a prop from route params
+    const {
+        files = [],
+        subjectName = 'Scanned Document',
+        subjectCode = 'SCAN-001',
+        onAddMore
+    } = route.params || {};
+
     const dispatch = useAppDispatch();
     const { isUploading, uploadProgress } = useAppSelector((state) => state.scanning);
     const [selectedFiles, setSelectedFiles] = useState<any[]>(files);
@@ -45,31 +42,64 @@ export const PdfPreviewModal: React.FC<PdfPreviewModalProps> = ({
 
     const insets = useSafeAreaInsets();
 
-    // Sync state with props
+    // Hardware back button support
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                if (onAddMore) {
+                    onAddMore(selectedFiles);
+                } else {
+                    navigation.navigate('ImagePreview', {
+                        subjectName,
+                        subjectCode
+                    });
+                }
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => subscription.remove();
+        }, [navigation, subjectName, subjectCode, onAddMore, selectedFiles])
+    );
+
+    // Sync state with params
     React.useEffect(() => {
-        if (isOpen) {
+        if (files && files.length > 0) {
             setSelectedFiles(files);
         }
-    }, [isOpen, files]);
+    }, [files]);
 
     const handleAddMore = async () => {
-        try {
-            const results = await DocumentPicker.pick({
-                type: [DocumentPicker.types.pdf, DocumentPicker.types.ppt, DocumentPicker.types.pptx],
-                allowMultiSelection: true,
-            });
+        if (onAddMore) {
+            onAddMore(selectedFiles);
+        } else {
+            try {
+                const results = await DocumentPicker.pick({
+                    type: [DocumentPicker.types.pdf, DocumentPicker.types.ppt, DocumentPicker.types.pptx],
+                    allowMultiSelection: true,
+                });
 
-            const newFiles = results.map(file => ({
-                uri: file.uri,
-                name: file.name || 'document.pdf',
-                type: file.type || 'application/pdf',
-                size: file.size,
-            }));
+                // Copy files to local cache so content:// URI permissions don't expire
+                const newFiles = await Promise.all(
+                    results.map(async (file) => {
+                        const fileName = file.name || `document_${Date.now()}.pdf`;
+                        const destPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+                        await RNFS.copyFile(file.uri, destPath);
+                        return {
+                            uri: `file://${destPath}`,
+                            name: fileName,
+                            type: file.type || 'application/pdf',
+                            size: file.size,
+                        };
+                    })
+                );
 
-            setSelectedFiles(prev => [...prev, ...newFiles]);
-        } catch (err) {
-            if (!DocumentPicker.isCancel(err)) {
-                Alert.alert('Error', 'Failed to pick document');
+                setSelectedFiles(prev => [...prev, ...newFiles]);
+            } catch (err) {
+                if (!DocumentPicker.isCancel(err)) {
+                    Alert.alert('Error', 'Failed to pick document');
+                }
             }
         }
     };
@@ -100,115 +130,138 @@ export const PdfPreviewModal: React.FC<PdfPreviewModalProps> = ({
                 files: filesToUpload
             })).unwrap();
 
-            onClose(); // Parent will handle Success Modal showing via Redux state
+            Toast.show({
+                type: 'success',
+                text1: 'Upload Successful',
+                text2: 'The sheet has been uploaded successfully.',
+                position: 'bottom',
+                visibilityTime: 3000,
+            });
+
+            // Reset navigation to Scanning and CameraScreen to clear the rest of the stack
+            navigation.reset({
+                index: 1,
+                routes: [
+                    { name: 'Scanning' },
+                    {
+                        name: 'CameraScreen',
+                        params: {
+                            subjectName,
+                            subjectCode,
+                            initialImages: []
+                        }
+                    }
+                ],
+            });
         } catch (error: any) {
             Alert.alert('Upload Failed', typeof error === 'string' ? error : 'Unknown error');
         }
     };
 
-    if (!isOpen) return null;
-
     return (
-        <Modal animationType="slide" visible={isOpen} onRequestClose={onBack}>
-            <View style={styles.container}>
-                <StatusBar barStyle="light-content" backgroundColor={colors.darkBackground} />
+        <View style={styles.container}>
+            <StatusBar barStyle="light-content" backgroundColor={colors.darkBackground} />
 
-                {/* Header */}
-                <View style={[styles.header, { paddingTop: insets.top }]}>
-                    <TouchableOpacity onPress={onBack} style={styles.iconButton}>
-                        <X color={colors.white} size={24} />
-                    </TouchableOpacity>
-                    <View style={styles.headerTextContainer}>
-                        <Text style={styles.headerTitle}>Review Files</Text>
-                        <Text style={styles.headerSubtitle}>{selectedFiles.length} files selected</Text>
-                    </View>
-                    <TouchableOpacity onPress={handleAddMore} disabled={isUploading} style={styles.addButton}>
-                        <Plus color={colors.primary} size={24} />
-                    </TouchableOpacity>
+            {/* Header */}
+            <View style={[styles.header, { paddingTop: insets.top }]}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Scanning', {
+                        subjectName,
+                        subjectCode
+                    });
+                }} style={styles.iconButton}>
+                    <ChevronLeft color={colors.white} size={24} />
+                </TouchableOpacity>
+                <View style={styles.headerTextContainer}>
+                    <Text style={styles.headerTitle}>Review & Upload</Text>
+                    <Text style={styles.headerSubtitle}>{selectedFiles.length} files selected</Text>
                 </View>
+                <TouchableOpacity onPress={handleAddMore} disabled={isUploading} style={styles.addButton}>
+                    <Plus color={colors.primary} size={24} /> ADD New Files
+                </TouchableOpacity>
+            </View>
 
-                {/* List */}
-                <FlatList
-                    data={selectedFiles}
-                    keyExtractor={(item, index) => `${item.uri}-${index}`}
-                    contentContainerStyle={styles.listContent}
-                    renderItem={({ item, index }) => (
-                        <View style={styles.fileItem}>
-                            <TouchableOpacity
-                                style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
-                                onPress={() => setPreviewFile(item)}
-                            >
-                                <View style={styles.fileIconBox}>
-                                    <FileText color={colors.primary} size={24} />
-                                </View>
-                                <View style={styles.fileInfo}>
-                                    <Text style={styles.fileName} numberOfLines={1}>{item.name}</Text>
-                                    <Text style={styles.fileSize}>
-                                        {item.size ? `${(item.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown Size'}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => handleRemoveFile(index)}
-                                style={styles.removeButton}
-                                disabled={isUploading}
-                            >
-                                <Trash2 color={colors.darkTextSecondary} size={20} />
-                            </TouchableOpacity>
+            {/* List */}
+            <FlatList
+                data={selectedFiles}
+                keyExtractor={(item, index) => `${item.uri}-${index}`}
+                contentContainerStyle={styles.listContent}
+                renderItem={({ item, index }) => (
+                    <View style={styles.fileItem}>
+                        <TouchableOpacity
+                            style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
+                            onPress={() => setPreviewFile(item)}
+                        >
+                            <View style={styles.fileIconBox}>
+                                <FileText color={colors.primary} size={24} />
+                            </View>
+                            <View style={styles.fileInfo}>
+                                <Text style={styles.fileName} numberOfLines={1}>{item.name}</Text>
+                                <Text style={styles.fileSize}>
+                                    {item.size ? `${(item.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown Size'}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => handleRemoveFile(index)}
+                            style={styles.removeButton}
+                            disabled={isUploading}
+                        >
+                            <Trash2 color={colors.darkTextSecondary} size={20} />
+                        </TouchableOpacity>
+                    </View>
+                )}
+                ListEmptyComponent={
+                    <View style={styles.emptyState}>
+                        <Text style={styles.emptyText}>No files selected</Text>
+                        <TouchableOpacity onPress={handleAddMore} style={styles.addMoreBtn}>
+                            <Text style={styles.addMoreText}>Select Files</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+            />
+
+            {/* Footer */}
+            <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
+                {/* <TouchableOpacity
+                    style={[styles.viewPdfButton, selectedFiles.length === 0 && styles.disabledButton]}
+                    onPress={() => {
+                        if (selectedFiles.length > 0) {
+                            setPreviewFile(selectedFiles[0]);
+                        }
+                    }}
+                    disabled={selectedFiles.length === 0}
+                >
+                    <FileText color={selectedFiles.length > 0 ? colors.primary : colors.darkTextSecondary} size={20} style={{ marginRight: 8 }} />
+                    <Text style={[styles.viewPdfText, selectedFiles.length === 0 && { color: colors.darkTextSecondary }]}>View PDF</Text>
+                </TouchableOpacity> */}
+                <TouchableOpacity
+                    style={[styles.submitButton, (isUploading || selectedFiles.length === 0) && styles.disabledButton]}
+                    onPress={handleSubmit}
+                    disabled={isUploading || selectedFiles.length === 0}
+                    activeOpacity={0.8}
+                >
+                    {isUploading ? (
+                        <View style={styles.uploadingRow}>
+                            <ActivityIndicator color="#fff" style={{ marginRight: 8 }} />
+                            <Text style={styles.submitText}>Uploading... {uploadProgress}%</Text>
+                        </View>
+                    ) : (
+                        <View style={styles.uploadingRow}>
+                            <Upload color="#fff" size={20} style={{ marginRight: 8 }} />
+                            <Text style={styles.submitText}>Upload {selectedFiles.length} Files</Text>
                         </View>
                     )}
-                    ListEmptyComponent={
-                        <View style={styles.emptyState}>
-                            <Text style={styles.emptyText}>No files selected</Text>
-                            <TouchableOpacity onPress={handleAddMore} style={styles.addMoreBtn}>
-                                <Text style={styles.addMoreText}>Select Files</Text>
-                            </TouchableOpacity>
-                        </View>
-                    }
-                />
-
-                {/* Footer */}
-                <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-                    <TouchableOpacity
-                        style={[styles.viewPdfButton, selectedFiles.length === 0 && styles.disabledButton]}
-                        onPress={() => {
-                            if (selectedFiles.length > 0) {
-                                setPreviewFile(selectedFiles[0]);
-                            }
-                        }}
-                        disabled={selectedFiles.length === 0}
-                    >
-                        <FileText color={selectedFiles.length > 0 ? colors.primary : colors.darkTextSecondary} size={20} style={{ marginRight: 8 }} />
-                        <Text style={[styles.viewPdfText, selectedFiles.length === 0 && { color: colors.darkTextSecondary }]}>View PDF</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.submitButton, (isUploading || selectedFiles.length === 0) && styles.disabledButton]}
-                        onPress={handleSubmit}
-                        disabled={isUploading || selectedFiles.length === 0}
-                        activeOpacity={0.8}
-                    >
-                        {isUploading ? (
-                            <View style={styles.uploadingRow}>
-                                <ActivityIndicator color="#fff" style={{ marginRight: 8 }} />
-                                <Text style={styles.submitText}>Uploading... {uploadProgress}%</Text>
-                            </View>
-                        ) : (
-                            <View style={styles.uploadingRow}>
-                                <Upload color="#fff" size={20} style={{ marginRight: 8 }} />
-                                <Text style={styles.submitText}>Upload {selectedFiles.length} Files</Text>
-                            </View>
-                        )}
-                    </TouchableOpacity>
-                </View>
-                {/* PDF Viewer Modal */}
-                <PdfViewerModal
-                    visible={!!previewFile}
-                    fileUri={previewFile?.uri || null}
-                    fileName={previewFile?.name}
-                    onClose={() => setPreviewFile(null)}
-                />
+                </TouchableOpacity>
             </View>
-        </Modal>
+            {/* PDF Viewer Modal */}
+            <PdfViewerModal
+                visible={!!previewFile}
+                fileUri={previewFile?.uri || null}
+                fileName={previewFile?.name}
+                onClose={() => setPreviewFile(null)}
+            />
+        </View>
     );
 };
 
@@ -358,4 +411,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PdfPreviewModal;
+export default PdfPreviewScreen;

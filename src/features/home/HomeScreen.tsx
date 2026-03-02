@@ -5,29 +5,26 @@ import {
     StyleSheet,
     TouchableOpacity,
     ScrollView,
-    Dimensions,
-    Image,
     StatusBar,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { ArrowRight, Scan, FileText, LogOut, User as UserIcon } from 'lucide-react-native';
+import { ArrowRight, Scan, FileText, LogOut } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { logout } from '../../core/redux/authSlice';
+import { RootState } from '../../app/store';
+import { logoutUser } from '../../core/redux/authSlice';
 import { colors } from '../../theme/colors';
-import { spacing, borderRadius } from '../../theme/spacing';
-import { typography } from '../../theme/typography';
+import { spacing } from '../../theme/spacing';
 
-const { width } = Dimensions.get('window');
 
 export const HomeScreen: React.FC = () => {
     const navigation = useNavigation<any>();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const insets = useSafeAreaInsets();
-    const user = useSelector((state: any) => state.auth.user);
+    const user = useSelector((state: RootState) => state.auth.user);
 
     const handleLogout = () => {
-        dispatch(logout());
+        dispatch(logoutUser());
     };
 
     return (

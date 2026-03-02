@@ -9,8 +9,9 @@ import {
     Dimensions,
     TouchableWithoutFeedback,
     StatusBar,
+    Alert,
 } from 'react-native';
-import { ScanLine, X, LogOut, FileText, CheckCircle, Clock, AlertTriangle } from 'lucide-react-native';
+import { ScanLine, X, LogOut, FileText } from 'lucide-react-native';
 import { PdfViewerModal } from './components/PdfViewerModal';
 
 import { logout } from '../../core/redux/authSlice';
@@ -78,56 +79,52 @@ const ScanningSidebar: React.FC<ScanningSidebarProps> = ({ onClose }) => {
         dispatch(logout());
     };
 
-    const StatusIcon = ({ status }: { status: string }) => {
-        switch (status) {
-            case 'processed':
-                return <CheckCircle size={16} color={colors.success} />;
-            case 'processing':
-                return <Clock size={16} color={colors.info} />;
-            case 'failed':
-                return <AlertTriangle size={16} color={colors.error} />;
-            default:
-                return <Clock size={16} color={colors.darkTextSecondary} />;
-        }
+
+    const renderItem = ({ item }: { item: any }) => {
+        // 's3_url' is the field from the API — log it the first time to confirm
+        const pdfUrl: string | undefined = item.s3_url || item.url || item.file_url;
+
+        return (
+            <TouchableOpacity
+                style={styles.historyItem}
+                onPress={() => {
+                    if (pdfUrl) {
+                        setSelectedPdf({
+                            uri: pdfUrl,
+                            name: item.file_name || 'Document.pdf',
+                        });
+                        setIsPdfVisible(true);
+                    } else {
+                        console.warn('[ScanningSidebar] No PDF URL on item:', JSON.stringify(item));
+                        Alert.alert('Unavailable', 'No PDF link found for this document.');
+                    }
+                }}
+            >
+                <View style={styles.historyIcon}>
+                    <FileText color={colors.darkTextSecondary} size={20} />
+                </View>
+                <View style={styles.historyContent}>
+                    <View style={styles.historyMeta}>
+                        <Text style={styles.historySubject} numberOfLines={1}>
+
+                            {item.subject_name || 'Unknown Subject'}
+                        </Text>
+                        <Text style={styles.historyDate}>
+                            {new Date(item.created_at).toLocaleDateString()}
+                        </Text>
+                    </View>
+                    <Text style={styles.historyFile} numberOfLines={1}>
+                        Paper code - {item.paper_code}
+                    </Text>
+                    <View style={styles.historyMeta}>
+
+
+
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
     };
-
-    const renderItem = ({ item }: { item: any }) => (
-        <TouchableOpacity
-            style={styles.historyItem}
-            onPress={() => {
-                if (item.s3_url) {
-                    setSelectedPdf({
-                        uri: item.s3_url,
-                        name: item.file_name || 'Document.pdf'
-                    });
-                    setIsPdfVisible(true);
-                }
-            }}
-        >
-            <View style={styles.historyIcon}>
-                <FileText color={colors.darkTextSecondary} size={20} />
-            </View>
-            <View style={styles.historyContent}>
-                <View style={styles.historyMeta}>
-                    <Text style={styles.historySubject} numberOfLines={1}>
-
-                        {item.subject_name || 'Unknown Subject'}
-                    </Text>
-                    <Text style={styles.historyDate}>
-                        {new Date(item.created_at).toLocaleDateString()}
-                    </Text>
-                </View>
-                <Text style={styles.historyFile} numberOfLines={1}>
-                    Paper code - {item.paper_code}
-                </Text>
-                <View style={styles.historyMeta}>
-
-
-
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
 
     return (
         <View style={styles.container}>

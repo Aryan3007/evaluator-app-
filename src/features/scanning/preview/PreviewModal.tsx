@@ -1,61 +1,109 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
     Image,
-    Modal,
-    SafeAreaView,
-    FlatList,
-    Alert,
     ActivityIndicator,
-    StatusBar
+    StatusBar,
+    BackHandler,
+    FlatList,
+    Alert
 } from 'react-native';
-import { X, CheckCircle, Trash2, Upload } from 'lucide-react-native';
-import { uploadFiles } from '../../../core/api/scanning.api';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import { Trash2, Upload, Plus, ChevronLeft } from 'lucide-react-native';
+import { uploadFiles } from '../../../core/redux/scanningSlice';
 import { useAppDispatch, useAppSelector } from '../../../core/hooks/useRedux';
 import { colors } from '../../../theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import RNImageToPdf from 'react-native-image-to-pdf';
+import ImageResizer from 'react-native-image-resizer';
 import { PdfViewerModal } from '../components/PdfViewerModal';
 import { FileText } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 
-interface PreviewModalProps {
-    isOpen: boolean;
-    initialImages: string[];
-    onClose: () => void;
-    onBack: () => void;
-    subjectName?: string;
-    subjectCode?: string;
-}
+export const PreviewScreen: React.FC = () => {
+    const navigation = useNavigation<any>();
+    const route = useRoute<any>();
+    const {
+        initialImages = [],
+        subjectName = 'Scanned Document',
+        subjectCode = 'SCAN-001',
+        onAddMore
+    } = route.params || {};
 
-export const PreviewModal: React.FC<PreviewModalProps> = ({
-    isOpen,
-    initialImages,
-    onClose,
-    onBack,
-    subjectName = 'Scanned Document',
-    subjectCode = 'SCAN-001'
-}) => {
     const dispatch = useAppDispatch();
     const { isUploading, uploadProgress } = useAppSelector((state) => state.scanning);
     const [images, setImages] = useState<string[]>(initialImages);
+
+    // Sync images with initialImages when params change (e.g. after upload reset)
+    useEffect(() => {
+        setImages(initialImages);
+    }, [initialImages]);
     const insets = useSafeAreaInsets();
 
-    // PDF Generation State
     const [generatedPdf, setGeneratedPdf] = useState<string | null>(null);
-    const [isConverting, setIsConverting] = useState(false);
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false); // Specific for View PDF
+    const [isPreparingUpload, setIsPreparingUpload] = useState(false); // Specific for Upload generation
     const [showPdfViewer, setShowPdfViewer] = useState(false);
 
+    // Hardware back button support
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                if (onAddMore) {
+                    onAddMore(images);
+                } else {
+                    navigation.navigate('CameraScreen', {
+                        subjectName,
+                        subjectCode,
+                        initialImages: images
+                    });
+                }
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => subscription.remove();
+        }, [navigation, subjectName, subjectCode, onAddMore, images])
+    );
+
     React.useEffect(() => {
-        if (isOpen) {
+        if (initialImages && initialImages.length > 0) {
             setImages(initialImages);
         }
-    }, [isOpen, initialImages]);
+    }, [initialImages]);
 
     const handleRemoveImage = (index: number) => {
         setImages(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const processImagesForPdf = async (sourceImages: string[]) => {
+        const processed = await Promise.all(sourceImages.map(async (img) => {
+            try {
+                // Resize to a large dimension to maintain quality but fix orientation.
+                // Using a square dimension with 'contain' mode ensures the image fits within these bounds while preserving aspect ratio.
+                // Rotation 0 with keepMeta false (default behavior of library usually applies EXIF rotation).
+                const result = await ImageResizer.createResizedImage(
+                    img,
+                    2000,
+                    2000,
+                    'JPEG',
+                    100, // Quality
+                    0, // Rotation
+                    undefined, // Output path
+                    false, // Keep meta
+                    { mode: 'contain', onlyScaleDown: false }
+                );
+                return result.uri;
+            } catch (error) {
+                console.error("Image processing failed for", img, error);
+                return img; // Fallback to original if processing fails
+            }
+        }));
+        return processed;
     };
 
     const handleSubmit = async () => {
@@ -66,18 +114,16 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
             return;
         }
 
-        setIsConverting(true); // Reuse converting state for PDF generation
+        setIsPreparingUpload(true);
 
         try {
+            const processedImages = await processImagesForPdf(images);
             const pdfName = `${subjectCode}_${Date.now()}.pdf`;
             const options = {
-                imagePaths: images.map(img => img.replace('file://', '')),
+                imagePaths: processedImages.map(img => img.replace('file://', '')),
                 name: pdfName,
-                maxSize: {
-                    width: 1240,
-                    height: 1754,
-                },
-                quality: 0.8,
+                // maxSize: { width: 1240, height: 1754 }, // Removed to prevent resizing
+                quality: 1.0,
             };
 
             const pdf = await RNImageToPdf.createPDFbyImages(options);
@@ -100,12 +146,34 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
                 files: filesToUpload
             })).unwrap();
 
-            onClose();
+            Toast.show({
+                type: 'success',
+                text1: 'Upload Successful',
+                text2: 'The sheet has been uploaded successfully.',
+                position: 'bottom',
+                visibilityTime: 3000,
+            });
+
+            // Reset navigation to Scanning and CameraScreen to clear the rest of the stack
+            navigation.reset({
+                index: 1,
+                routes: [
+                    { name: 'Scanning' },
+                    {
+                        name: 'CameraScreen',
+                        params: {
+                            subjectName,
+                            subjectCode,
+                            initialImages: []
+                        }
+                    }
+                ],
+            });
         } catch (error: any) {
             console.error(error);
             Alert.alert('Upload Failed', typeof error === 'string' ? error : 'Failed to generate or upload PDF');
         } finally {
-            setIsConverting(false);
+            setIsPreparingUpload(false);
         }
     };
 
@@ -117,20 +185,14 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
             return;
         }
 
-        // If we already generated a PDF and images haven't changed, just show it
-        // Ideally we reset generatedPdf on images change. 
-        // For simplicity: regenerate every time for now or simple check.
-
-        setIsConverting(true);
+        setIsGeneratingPdf(true);
         try {
+            const processedImages = await processImagesForPdf(images);
             const options = {
-                imagePaths: images.map(img => img.replace('file://', '')),
+                imagePaths: processedImages.map(img => img.replace('file://', '')),
                 name: `${subjectCode}.pdf`,
-                maxSize: { // Optional: resize images
-                    width: 1240,
-                    height: 1754, // A4 @ 150dpi approx
-                },
-                quality: 0.8, // Compress a bit
+                // maxSize: { width: 1240, height: 1754 }, // Removed to prevent resizing
+                quality: 1.0,
             };
 
             // Note: react-native-image-to-pdf might need file:// stripped on iOS or not depending on version
@@ -144,7 +206,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
             console.error(e);
             Alert.alert('Error', 'Failed to generate PDF');
         } finally {
-            setIsConverting(false);
+            setIsGeneratingPdf(false);
         }
     };
 
@@ -153,99 +215,118 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
         setGeneratedPdf(null);
     }, [images]);
 
-    if (!isOpen) return null;
+    // Helper to determine if any action is blocking interaction
+    const isBusy = isUploading || isGeneratingPdf || isPreparingUpload;
 
     return (
-        <Modal animationType="slide" visible={isOpen} onRequestClose={onBack}>
-            <View style={styles.container}>
-                <StatusBar barStyle="light-content" backgroundColor={colors.darkBackground} />
+        <View style={styles.container}>
+            <StatusBar barStyle="light-content" backgroundColor={colors.darkBackground} />
 
-                {/* Header */}
-                <View style={[styles.header, { paddingTop: insets.top }]}>
-                    <TouchableOpacity onPress={onBack} style={styles.iconButton}>
-                        <X color={colors.white} size={24} />
-                    </TouchableOpacity>
-                    <View style={styles.headerTextContainer}>
-                        <Text style={styles.headerTitle}>Review Scans</Text>
-                        <Text style={styles.headerSubtitle}>{images.length} pages captured</Text>
-                    </View>
-                    <View style={{ width: 40 }} />
+            {/* Header */}
+            <View style={[styles.header, { paddingTop: insets.top }]}>
+                <TouchableOpacity onPress={() => {
+                    if (onAddMore) {
+                        onAddMore(images);
+                    } else {
+                        navigation.navigate('CameraScreen', {
+                            subjectName,
+                            subjectCode,
+                            initialImages: images
+                        });
+                    }
+                }} style={styles.iconButton}>
+                    <ChevronLeft color={colors.white} size={24} />
+                </TouchableOpacity>
+                <View style={styles.headerTextContainer}>
+                    <Text style={styles.headerTitle}>Review & Upload</Text>
+                    <Text style={styles.headerSubtitle}>{images.length} pages captured</Text>
                 </View>
+                {onAddMore ? (
+                    <TouchableOpacity onPress={() => onAddMore(images)} disabled={isBusy} style={styles.addButton}>
+                        <Plus color={colors.primary} size={24} />
+                    </TouchableOpacity>
+                ) : (
+                    <View style={{ width: 40 }} />
+                )}
+            </View>
 
-                {/* Grid of Images */}
-                <FlatList
-                    data={images}
-                    keyExtractor={(item, index) => `${index}`}
-                    numColumns={2}
-                    contentContainerStyle={styles.gridContent}
-                    renderItem={({ item, index }) => (
-                        <View style={styles.imageCard}>
-                            <Image source={{ uri: item }} style={styles.thumbnail} />
-                            <View style={styles.badge}>
-                                <Text style={styles.badgeText}>{index + 1}</Text>
-                            </View>
-                            <TouchableOpacity
-                                onPress={() => handleRemoveImage(index)}
-                                style={styles.removeButton}
-                                disabled={isUploading}
-                            >
-                                <Trash2 color="#fff" size={16} />
-                            </TouchableOpacity>
+            {/* Grid of Images */}
+            <FlatList
+                data={images}
+                keyExtractor={(item, index) => `${index}`}
+                numColumns={2}
+                contentContainerStyle={styles.gridContent}
+                renderItem={({ item, index }) => (
+                    <View style={styles.imageCard}>
+                        <Image source={{ uri: item }} style={styles.thumbnail} />
+                        <View style={styles.badge}>
+                            <Text style={styles.badgeText}>{index + 1}</Text>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => handleRemoveImage(index)}
+                            style={styles.removeButton}
+                            disabled={isBusy}
+                        >
+                            <Trash2 color="#fff" size={16} />
+                        </TouchableOpacity>
+                    </View>
+                )}
+                ListEmptyComponent={
+                    <View style={styles.emptyState}>
+                        <Text style={styles.emptyText}>No images to display</Text>
+                    </View>
+                }
+            />
+
+            {/* Bottom Bar */}
+            <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
+                <TouchableOpacity
+                    style={[styles.viewPdfButton, (isGeneratingPdf || images.length === 0) && styles.disabledButton]}
+                    onPress={handleViewPdf}
+                    disabled={isBusy || images.length === 0}
+                >
+                    {isGeneratingPdf ? (
+                        <ActivityIndicator color={colors.primary} size="small" />
+                    ) : (
+                        <>
+                            <FileText color={images.length > 0 ? colors.primary : colors.darkTextSecondary} size={20} style={{ marginRight: 8 }} />
+                            <Text style={[styles.viewPdfText, images.length === 0 && { color: colors.darkTextSecondary }]}>View PDF</Text>
+                        </>
+                    )}
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.submitButton, (isUploading || isPreparingUpload || images.length === 0) && styles.disabledButton]}
+                    onPress={handleSubmit}
+                    disabled={isBusy || images.length === 0}
+                    activeOpacity={0.8}
+                >
+                    {(isUploading || isPreparingUpload) ? (
+                        <View style={styles.btnContent}>
+                            <ActivityIndicator color="#fff" style={{ marginRight: 8 }} />
+                            <Text style={styles.submitText}>
+                                {isUploading ? `Uploading... ${uploadProgress}%` : 'Preparing...'}
+                            </Text>
+                        </View>
+                    ) : (
+                        <View style={styles.btnContent}>
+                            <Upload color="#fff" size={20} style={{ marginRight: 8 }} />
+                            <Text style={styles.submitText}>Upload PDF ({images.length} Pages)</Text>
                         </View>
                     )}
-                    ListEmptyComponent={
-                        <View style={styles.emptyState}>
-                            <Text style={styles.emptyText}>No images to display</Text>
-                        </View>
-                    }
-                />
-
-                {/* Bottom Bar */}
-                <View style={[styles.bottomBar, { paddingBottom: insets.bottom + 16 }]}>
-                    <TouchableOpacity
-                        style={[styles.viewPdfButton, (isConverting || images.length === 0) && styles.disabledButton]}
-                        onPress={handleViewPdf}
-                        disabled={isConverting || isUploading || images.length === 0}
-                    >
-                        {isConverting ? (
-                            <ActivityIndicator color={colors.primary} size="small" />
-                        ) : (
-                            <>
-                                <FileText color={images.length > 0 ? colors.primary : colors.darkTextSecondary} size={20} style={{ marginRight: 8 }} />
-                                <Text style={[styles.viewPdfText, images.length === 0 && { color: colors.darkTextSecondary }]}>View PDF</Text>
-                            </>
-                        )}
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={[styles.submitButton, (isUploading || isConverting || images.length === 0) && styles.disabledButton]}
-                        onPress={handleSubmit}
-                        disabled={isUploading || isConverting || images.length === 0}
-                        activeOpacity={0.8}
-                    >
-                        {isUploading ? (
-                            <View style={styles.btnContent}>
-                                <ActivityIndicator color="#fff" style={{ marginRight: 8 }} />
-                                <Text style={styles.submitText}>Uploading... {uploadProgress}%</Text>
-                            </View>
-                        ) : (
-                            <View style={styles.btnContent}>
-                                <Upload color="#fff" size={20} style={{ marginRight: 8 }} />
-                                <Text style={styles.submitText}>Upload PDF ({images.length} Pages)</Text>
-                            </View>
-                        )}
-                    </TouchableOpacity>
-                </View>
-
-                {/* PDF Viewer for Generated PDF */}
-                <PdfViewerModal
-                    visible={showPdfViewer}
-                    fileUri={generatedPdf}
-                    fileName={`${subjectCode}.pdf`}
-                    onClose={() => setShowPdfViewer(false)}
-                />
+                </TouchableOpacity>
             </View>
-        </Modal>
+
+            {/* PDF Viewer for Generated PDF */}
+            <PdfViewerModal
+                visible={showPdfViewer}
+                fileUri={generatedPdf}
+                fileName={`${subjectCode}.pdf`}
+                onClose={() => {
+                    setShowPdfViewer(false);
+                }}
+            />
+        </View>
     );
 };
 
@@ -262,6 +343,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkBackground,
     },
     iconButton: {
+        padding: 8,
+        backgroundColor: colors.iconBackground,
+        borderRadius: 20,
+    },
+    addButton: {
         padding: 8,
         backgroundColor: colors.iconBackground,
         borderRadius: 20,
@@ -392,4 +478,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PreviewModal;
+export default PreviewScreen;

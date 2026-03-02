@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
     View,
     Text,
@@ -6,45 +6,97 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    Alert,
-    Dimensions,
     StatusBar,
     Platform,
     PermissionsAndroid,
+    NativeModules,
+    ActivityIndicator,
 } from 'react-native';
-import DocumentScanner from 'react-native-document-scanner-plugin';
+import { Camera, CameraType } from 'react-native-camera-kit';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { X, Trash2, CheckCircle, Camera as CameraIcon, Image as ImageIcon } from 'lucide-react-native';
+import { X, Trash2, CheckCircle, Zap } from 'lucide-react-native';
+import KeyEvent from 'react-native-keyevent';
+import ImageResizer from 'react-native-image-resizer';
 import { ImageViewerModal } from '../components/ImageViewerModal';
-import { colors } from '../../../theme/colors';
-import Sound from 'react-native-sound';
+import { ActionPopupModal } from '../components/ActionPopupModal';
+import { backgroundUpload } from '../utils/backgroundUpload';
+import { fetchFileHistory } from '../../../core/redux/scanningSlice';
+import { useAppDispatch } from '../../../core/hooks/useRedux';
+import { preloadSounds, playAudio } from '../../../utils/sounds';
 
-// Enable playback in silence mode
-Sound.setCategory('Playback');
-
-const { width, height } = Dimensions.get('window');
+const { ShutterSound } = NativeModules;
 
 const KEYCODE_VOLUME_UP = 24;
 const KEYCODE_VOLUME_DOWN = 25;
+const LONG_PRESS_DURATION = 3000; // ms — hold volume key for 3s to show popup
+
+interface UploadEntry {
+    pdfName: string;
+    status: 'uploading' | 'success' | 'error';
+}
 
 const CameraScreen = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const route = useRoute<any>();
-    const { onCaptureComplete, initialImages = [] } = route.params || {};
+    const dispatch = useAppDispatch();
+    const { subjectName, subjectCode, initialImages = [] } = route.params || {};
 
+    const camera = useRef<any>(null);
+    const scrollViewRef = useRef<ScrollView>(null);
+    const isCapturing = useRef(false);
+    const captureQueue = useRef(0);
 
-
-    // ── ALL hooks must be declared before any conditional return ──────────────
+    // ── State ──
     const [images, setImages] = useState<string[]>(initialImages);
+    const [flash, setFlash] = useState<'on' | 'off'>('off');
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [copyNumber, setCopyNumber] = useState(1);
+    const [activeUploads, setActiveUploads] = useState<UploadEntry[]>([]);
+    const [finishUploading, setFinishUploading] = useState(false);
+
+    // ── Refs (mirrors for use in key event listeners to avoid stale closures) ──
+    const imagesRef = useRef<string[]>(initialImages);
+    const popupVisibleRef = useRef(false);
+    const copyNumberRef = useRef(1);
+
+    // Long-press detection refs
+    const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isHolding = useRef(false);
+
+    // Cooldown: timestamp when popup was shown — ignore volume keys for 1s after
+    const popupShownAt = useRef(0);
+
+    // Sync refs with state
+    useEffect(() => { imagesRef.current = images; }, [images]);
+    useEffect(() => { popupVisibleRef.current = popupVisible; }, [popupVisible]);
+    useEffect(() => { copyNumberRef.current = copyNumber; }, [copyNumber]);
+
+    // Sync images with initialImages when params change
+    const initialImagesJson = JSON.stringify(initialImages);
+    useEffect(() => {
+        setImages(initialImages);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialImagesJson]);
+
+    // Auto-dismiss popup after 10s
+    useEffect(() => {
+        if (popupVisible) {
+            const timeout = setTimeout(() => {
+                popupVisibleRef.current = false;
+                setPopupVisible(false);
+            }, 10000);
+            return () => clearTimeout(timeout);
+        }
+    }, [popupVisible]);
 
     // Permissions
     useEffect(() => {
         const requestPermission = async () => {
             if (Platform.OS === 'android') {
                 const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.CAMERA
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
                 );
                 setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
             } else {
@@ -52,59 +104,216 @@ const CameraScreen = () => {
             }
         };
         requestPermission();
+
+        // Preload custom mp3 files into memory so they play instantly
+        preloadSounds();
     }, []);
 
-    const scanDocument = async () => {
-        if (!hasPermission) {
-            Alert.alert('Permission Required', 'Please grant camera permission to scan documents.');
+    // ── Sound helpers ──
+    const playSound = useCallback((type: 'shutter' | 'popup' | 'confirm' | 'success' | 'error') => {
+        switch (type) {
+            case 'shutter':
+                ShutterSound?.play();
+                break;
+            case 'popup':
+                playAudio('popup');
+                break;
+            case 'confirm':
+                playAudio('confirm');
+                break;
+            case 'success':
+                playAudio('success');
+                break;
+            case 'error':
+                playAudio('error');
+                break;
+        }
+    }, []);
+
+    // ── Capture ──
+    const handleCapture = useCallback(async () => {
+        if (!camera.current) return;
+
+        if (isCapturing.current) {
+            captureQueue.current++;
             return;
         }
 
+        isCapturing.current = true;
+
         try {
-            const { scannedImages, status } = await DocumentScanner.scanDocument({
-                maxNumDocuments: 24,
-                croppedImageQuality: 100 // optional
-            });
-
-            if (status === 'cancel') {
-                // User cancelled, do nothing or go back if no images
-            }
-
-            if (scannedImages && scannedImages.length > 0) {
-                // Play shutter sound
-                const shutterSound = new Sound('https://www.soundjay.com/mechanical/sounds/camera-shutter-click-08.mp3', undefined, (error) => {
-                    if (error) {
-                        console.log('Failed to load sound', error);
-                        return;
-                    }
-                    shutterSound.play((success) => {
-                        if (!success) {
-                            console.log('Sound playback failed');
-                        }
-                        shutterSound.release();
-                    });
+            const photo = await camera.current.capture();
+            if (photo && photo.uri) {
+                // Sound AFTER successful capture — stays in sync with UI
+                playSound('shutter');
+                // Resize immediately (1 image = ~50ms) so PDF generation stays fast even with 40+ images
+                const resized = await ImageResizer.createResizedImage(
+                    photo.uri, 1200, 1600, 'JPEG', 70, 0, undefined, false,
+                    { mode: 'contain', onlyScaleDown: true },
+                );
+                setImages(prev => [...prev, resized.uri]);
+                requestAnimationFrame(() => {
+                    scrollViewRef.current?.scrollToEnd({ animated: true });
                 });
-
-                setImages(prev => [...prev, ...scannedImages]);
             }
-        } catch (e) {
-            console.error('Scanner failed:', e);
-            Alert.alert('Error', 'Failed to scan document');
+        } catch (error) {
+            console.error('Capture failed:', error);
+        } finally {
+            isCapturing.current = false;
+            if (captureQueue.current > 0) {
+                captureQueue.current--;
+                handleCapture();
+            }
         }
-    };
+    }, [playSound]);
 
-    useEffect(() => {
-        // Auto-launch scanner on first load if no images
-        if (hasPermission && images.length === 0) {
-            scanDocument();
+    // ── Next Copy (background PDF + upload) ──
+    const handleNextCopy = useCallback(() => {
+        playSound('confirm');
+        popupVisibleRef.current = false; // sync immediately
+        setPopupVisible(false);
+
+        const currentImages = [...imagesRef.current];
+        const currentCopy = copyNumberRef.current;
+
+        // Reset camera for next copy immediately
+        setImages([]);
+        setCopyNumber(prev => prev + 1);
+
+        if (currentImages.length === 0) return;
+
+        const pdfName = `${subjectCode}_copy${currentCopy}_${Date.now()}.pdf`;
+        setActiveUploads(prev => [...prev, { pdfName, status: 'uploading' }]);
+
+        backgroundUpload({
+            images: currentImages,
+            subjectName,
+            subjectCode,
+            pdfName,
+            onSuccess: (name) => {
+                playSound('success');
+                dispatch(fetchFileHistory({ limit: 10 }));
+                setActiveUploads(prev =>
+                    prev.map(u => (u.pdfName === name ? { ...u, status: 'success' } : u)),
+                );
+                setTimeout(() => {
+                    setActiveUploads(prev => prev.filter(u => u.pdfName !== name));
+                }, 3000);
+            },
+            onError: (_error, name) => {
+                playSound('error');
+                setActiveUploads(prev =>
+                    prev.map(u => (u.pdfName === name ? { ...u, status: 'error' } : u)),
+                );
+            },
+        });
+    }, [playSound, subjectName, subjectCode, dispatch]);
+
+    // ── Finish Subject ──
+    const handleFinishSubject = useCallback(() => {
+        playSound('confirm');
+        popupVisibleRef.current = false;
+        setPopupVisible(false);
+
+        const currentImages = [...imagesRef.current];
+        const currentCopy = copyNumberRef.current;
+
+        if (currentImages.length > 0) {
+            const pdfName = `${subjectCode}_copy${currentCopy}_${Date.now()}.pdf`;
+            setFinishUploading(true);
+
+            // Upload PDF then navigate to home
+            backgroundUpload({
+                images: currentImages,
+                subjectName,
+                subjectCode,
+                pdfName,
+                onSuccess: () => {
+                    playSound('success');
+                    dispatch(fetchFileHistory({ limit: 10 }));
+                    setFinishUploading(false);
+                    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+                },
+                onError: () => {
+                    playSound('error');
+                    setFinishUploading(false);
+                    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+                },
+            });
+        } else {
+            // No images — just go home
+            navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
         }
-    }, [hasPermission]); // Only run when permission is determined
-    // ─────────────────────────────────────────────────────────────────────────
+    }, [playSound, subjectName, subjectCode, dispatch, navigation]);
+
+    // ── Volume Key Event Handling (long-press = popup, short-press = capture/confirm) ──
+    useEffect(() => {
+        if (Platform.OS === 'android') {
+            KeyEvent.onKeyDownListener((keyEvent: any) => {
+                if (keyEvent.keyCode !== KEYCODE_VOLUME_UP && keyEvent.keyCode !== KEYCODE_VOLUME_DOWN) return;
+                if (isHolding.current) return; // guard against Android repeated KEY_DOWN
+                isHolding.current = true;
+
+                // Start 3s long-press timer — if held long enough, show popup
+                longPressTimer.current = setTimeout(() => {
+                    longPressTimer.current = null;
+                    if (!popupVisibleRef.current && imagesRef.current.length > 0) {
+                        playSound('popup');
+                        popupVisibleRef.current = true;
+                        popupShownAt.current = Date.now();
+                        setPopupVisible(true);
+                    }
+                }, LONG_PRESS_DURATION);
+            });
+        }
+
+        KeyEvent.onKeyUpListener((keyEvent: any) => {
+            if (keyEvent.keyCode !== KEYCODE_VOLUME_UP && keyEvent.keyCode !== KEYCODE_VOLUME_DOWN) return;
+            isHolding.current = false;
+
+            // Cancel long-press timer (short press)
+            let wasLongPress = false;
+
+            if (Platform.OS === 'android') {
+                wasLongPress = !longPressTimer.current; // timer already fired = long press
+                if (longPressTimer.current) {
+                    clearTimeout(longPressTimer.current);
+                    longPressTimer.current = null;
+                }
+            }
+
+            if (popupVisibleRef.current) {
+                // Ignore the key-up from the hold that just opened the popup (1s cooldown)
+                if (Date.now() - popupShownAt.current < 1000) return;
+                // Short press while popup visible → confirm "Next Copy"
+                handleNextCopy();
+            } else if (!wasLongPress) {
+                // Short press, no popup → capture
+                handleCapture();
+            }
+        });
+
+        return () => {
+            if (Platform.OS === 'android') {
+                KeyEvent.removeKeyDownListener();
+            }
+            KeyEvent.removeKeyUpListener();
+            if (longPressTimer.current) clearTimeout(longPressTimer.current);
+        };
+    }, [handleCapture, handleNextCopy, playSound]);
+
+    // ── UI Handlers ──
+    const toggleFlash = () => {
+        setFlash(prev => (prev === 'on' ? 'off' : 'on'));
+    };
 
     const handleSubmit = () => {
         if (images.length === 0) return;
-        if (onCaptureComplete) onCaptureComplete(images);
-        navigation.goBack();
+        navigation.navigate('ImagePreview', {
+            subjectName,
+            subjectCode,
+            initialImages: images,
+        });
     };
 
     const handleRemoveImage = (index: number) => {
@@ -125,13 +334,9 @@ const CameraScreen = () => {
                 newImages[selectedImageIndex] = newUri;
                 return newImages;
             });
-            // We can choose to close or keep open. Let's keep open to see result.
-            // Actually usually better to close or just let user see it. 
-            // The modal uses imageUri from props which will update.
         }
     };
 
-    // ── Single return — permission states rendered conditionally inside ────────
     return (
         <View style={styles.container}>
             <StatusBar hidden />
@@ -151,7 +356,7 @@ const CameraScreen = () => {
                         style={styles.permButton}
                         onPress={async () => {
                             const granted = await PermissionsAndroid.request(
-                                PermissionsAndroid.PERMISSIONS.CAMERA
+                                PermissionsAndroid.PERMISSIONS.CAMERA,
                             );
                             setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
                         }}
@@ -161,57 +366,101 @@ const CameraScreen = () => {
                 </View>
             )}
 
-            {/* Main Content — only rendered when permission granted */}
+            {/* Main Content */}
             {hasPermission === true && (
                 <View style={styles.contentContainer}>
+                    <Camera
+                        ref={camera}
+                        style={StyleSheet.absoluteFill}
+                        cameraType={CameraType.Back}
+                        flashMode={flash}
+                        zoomMode="on"
+                        resizeMode="cover"
+                        shutterPhotoSound={false}
+                    />
+
                     {/* Top Bar */}
                     <View style={styles.topBar}>
-                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Scanning')} style={styles.iconButton}>
                             <X color="#fff" size={28} />
                         </TouchableOpacity>
                         <Text style={styles.headerTitle}>
-                            {images.length > 0 ? `${images.length} Pages Scanned` : 'Scan Document'}
+                            {images.length > 0
+                                ? `Copy ${copyNumber} \u2022 ${images.length} Captured`
+                                : `Copy ${copyNumber} \u2022 Scan Document`}
                         </Text>
-                        <View style={{ width: 48 }} />
+                        <TouchableOpacity onPress={toggleFlash} style={styles.iconButton}>
+                            <Zap
+                                color={flash === 'on' ? '#fbbf24' : '#fff'}
+                                fill={flash === 'on' ? '#fbbf24' : 'none'}
+                                size={28}
+                            />
+                        </TouchableOpacity>
                     </View>
 
-                    {/* Center Placeholder / Start Button */}
-                    <View style={styles.centerActionContainer}>
-                        {images.length === 0 ? (
-                            <View style={styles.emptyState}>
-                                <View style={styles.emptyIconCircle}>
-                                    <CameraIcon size={48} color={colors.primary || '#6366f1'} />
+                    {/* Background Upload Status Badges */}
+                    {activeUploads.length > 0 && (
+                        <View style={styles.uploadStatusContainer}>
+                            {activeUploads.map((upload) => (
+                                <View
+                                    key={upload.pdfName}
+                                    style={[
+                                        styles.uploadBadge,
+                                        upload.status === 'uploading' && styles.uploadBadgeActive,
+                                        upload.status === 'success' && styles.uploadBadgeSuccess,
+                                        upload.status === 'error' && styles.uploadBadgeError,
+                                    ]}
+                                >
+                                    {upload.status === 'uploading' && (
+                                        <ActivityIndicator size="small" color="#fff" />
+                                    )}
+                                    <Text style={styles.uploadBadgeText}>
+                                        {upload.status === 'uploading'
+                                            ? 'Uploading...'
+                                            : upload.status === 'success'
+                                                ? 'Uploaded'
+                                                : 'Failed'}
+                                    </Text>
                                 </View>
-                                <Text style={styles.emptyTitle}>No pages scanned</Text>
-                                <Text style={styles.emptyDesc}>Tap the button below to start scanning document pages.</Text>
-                            </View>
-                        ) : (
-                            <View style={styles.imagesGrid}>
-                                <ScrollView contentContainerStyle={styles.gridContent}>
-                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-                                        {images.map((img, idx) => (
+                            ))}
+                        </View>
+                    )}
+
+                    {/* Center Placeholder */}
+                    <View style={styles.centerActionContainer} />
+
+                    {/* Floating Images Grid Overlay */}
+                    {images.length > 0 && (
+                        <View style={styles.imagesGridOverlay}>
+                            <ScrollView
+                                horizontal
+                                ref={scrollViewRef}
+                                contentContainerStyle={styles.gridContent}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                                <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 20 }}>
+                                    {images.map((img, idx) => (
+                                        <TouchableOpacity
+                                            key={idx}
+                                            style={styles.gridItem}
+                                            onPress={() => setSelectedImageIndex(idx)}
+                                        >
+                                            <Image source={{ uri: img }} style={styles.gridImage} />
+                                            <View style={styles.gridBadge}>
+                                                <Text style={styles.gridBadgeText}>{idx + 1}</Text>
+                                            </View>
                                             <TouchableOpacity
-                                                key={idx}
-                                                style={styles.gridItem}
-                                                onPress={() => setSelectedImageIndex(idx)}
+                                                style={styles.gridDelete}
+                                                onPress={() => handleRemoveImage(idx)}
                                             >
-                                                <Image source={{ uri: img }} style={styles.gridImage} />
-                                                <View style={styles.gridBadge}>
-                                                    <Text style={styles.gridBadgeText}>{idx + 1}</Text>
-                                                </View>
-                                                <TouchableOpacity
-                                                    style={styles.gridDelete}
-                                                    onPress={() => handleRemoveImage(idx)}
-                                                >
-                                                    <X size={12} color="#fff" />
-                                                </TouchableOpacity>
+                                                <X size={12} color="#fff" />
                                             </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </ScrollView>
-                            </View>
-                        )}
-                    </View>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                        </View>
+                    )}
 
                     {/* Bottom Controls */}
                     <View style={styles.bottomControls}>
@@ -224,10 +473,20 @@ const CameraScreen = () => {
                                 <Trash2 color={images.length > 0 ? '#ef4444' : '#52525b'} size={24} />
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.captureBtn} onPress={scanDocument}>
-                                <View style={styles.captureInner}>
-                                    <CameraIcon color="#000" size={32} />
-                                </View>
+                            <TouchableOpacity
+                                style={styles.captureBtn}
+                                onPress={handleCapture}
+                                onLongPress={() => {
+                                    if (!popupVisibleRef.current && imagesRef.current.length > 0) {
+                                        playSound('popup');
+                                        popupVisibleRef.current = true;
+                                        popupShownAt.current = Date.now();
+                                        setPopupVisible(true);
+                                    }
+                                }}
+                                delayLongPress={800} // standard UI long press duration
+                            >
+                                <View style={styles.captureInner} />
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -254,6 +513,27 @@ const CameraScreen = () => {
                 onDelete={handleDeleteFromPreview}
                 onCropSave={handleCropSave}
             />
+
+            <ActionPopupModal
+                visible={popupVisible}
+                copyNumber={copyNumber}
+                imageCount={images.length}
+                onNextCopy={handleNextCopy}
+                onFinish={handleFinishSubject}
+                onCancel={() => {
+                    popupVisibleRef.current = false;
+                    setPopupVisible(false);
+                }}
+            />
+
+            {/* Full-screen uploading overlay for Finish Subject */}
+            {finishUploading && (
+                <View style={styles.finishOverlay}>
+                    <ActivityIndicator size="large" color="#fff" />
+                    <Text style={styles.finishOverlayText}>Finishing Uploading PDF...</Text>
+                    <Text style={styles.finishOverlayText}>Redirecting to Home in few seconds...</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -271,33 +551,71 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: Platform.OS === 'ios' ? 50 : 20,
         paddingHorizontal: 20,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
     },
-    headerTitle: { color: '#fff', fontSize: 18, fontWeight: '600' },
-    iconButton: { padding: 10, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 25 },
+    headerTitle: { color: '#fff', fontSize: 18, fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.5)', textShadowRadius: 4 },
+    iconButton: { padding: 10, backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 25 },
+
+    // Upload status badges
+    uploadStatusContainer: {
+        position: 'absolute',
+        top: Platform.OS === 'ios' ? 100 : 70,
+        right: 16,
+        zIndex: 10,
+        gap: 6,
+    },
+    uploadBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 20,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+    },
+    uploadBadgeActive: { backgroundColor: 'rgba(33,150,243,0.8)' },
+    uploadBadgeSuccess: { backgroundColor: 'rgba(76,175,80,0.8)' },
+    uploadBadgeError: { backgroundColor: 'rgba(244,67,54,0.8)' },
+    uploadBadgeText: { color: '#fff', fontSize: 12, fontWeight: '600' },
 
     centerActionContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
     },
-    emptyState: { alignItems: 'center', justifyContent: 'center' },
-    emptyIconCircle: { width: 80, height: 80, borderRadius: 40, backgroundColor: 'rgba(99, 102, 241, 0.1)', alignItems: 'center', justifyContent: 'center', marginBottom: 20 },
-    emptyTitle: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 8 },
-    emptyDesc: { color: '#999', textAlign: 'center', maxWidth: 240 },
 
-    imagesGrid: { flex: 1, width: '100%' },
-    gridContent: { paddingVertical: 20 },
-    gridItem: { width: 100, height: 140, borderRadius: 8, overflow: 'hidden', backgroundColor: '#333', position: 'relative' },
+    imagesGridOverlay: {
+        position: 'absolute',
+        bottom: 140,
+        width: '100%',
+        height: 100,
+    },
+    gridContent: {
+        paddingVertical: 10,
+    },
+    gridItem: { width: 60, height: 80, borderRadius: 8, overflow: 'hidden', backgroundColor: '#333', position: 'relative', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
     gridImage: { width: '100%', height: '100%' },
-    gridBadge: { position: 'absolute', bottom: 4, right: 4, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 6, borderRadius: 4 },
-    gridBadgeText: { color: '#fff', fontSize: 10, fontWeight: '700' },
-    gridDelete: { position: 'absolute', top: 4, right: 4, backgroundColor: '#ef4444', width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+    gridBadge: { position: 'absolute', bottom: 2, right: 2, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 4, borderRadius: 3 },
+    gridBadgeText: { color: '#fff', fontSize: 8, fontWeight: '700' },
+    gridDelete: { position: 'absolute', top: 2, right: 2, backgroundColor: '#ef4444', width: 16, height: 16, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
 
-    bottomControls: { paddingBottom: 40, paddingHorizontal: 20, backgroundColor: '#000' },
+    bottomControls: {
+        paddingBottom: 40,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
     actionRow: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' },
     captureBtn: { width: 80, height: 80, borderRadius: 40, borderWidth: 4, borderColor: '#fff', alignItems: 'center', justifyContent: 'center' },
-    captureInner: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' },
+    captureInner: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#fff' },
     secondaryBtn: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#27272a', alignItems: 'center', justifyContent: 'center', position: 'relative' },
     badge: {
         position: 'absolute', top: -5, right: -5,
@@ -306,7 +624,20 @@ const styles = StyleSheet.create({
         borderWidth: 2, borderColor: '#000',
     },
     badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
-});
 
+    finishOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0,0,0,0.85)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 200,
+    },
+    finishOverlayText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: '600',
+        marginTop: 16,
+    },
+});
 
 export default CameraScreen;

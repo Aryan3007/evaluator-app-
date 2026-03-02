@@ -1,35 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
     TextInput,
     TouchableOpacity,
     StyleSheet,
-    ScrollView,
-    SafeAreaView,
     StatusBar,
     ActivityIndicator,
     Modal,
-    Platform,
     Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Camera, FileText, Menu, ChevronRight, X, CheckCircle, BookOpen, Hash, ArrowLeft, HelpCircle } from 'lucide-react-native';
-import { resetUpload } from '../../core/api/scanning.api';
+import { Camera, FileText, Menu, ChevronRight, BookOpen, Hash, Home } from 'lucide-react-native';
 import ScanningSidebar from './ScanningSidebar';
 import DocumentPicker from 'react-native-document-picker';
-import { PreviewModal } from './preview/PreviewModal'; // We'll implement this later
-import { PdfPreviewModal } from './preview/PdfPreviewScreen'; // We'll implement this later
-import { useAppDispatch, useAppSelector } from '../../core/hooks/useRedux';
+import RNFS from 'react-native-fs';
+import { useAppSelector } from '../../core/hooks/useRedux';
 import { colors } from '../../theme/colors';
-import { typography } from '../../theme/typography';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ScanningScreen = () => {
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<any>();
     const insets = useSafeAreaInsets();
-    const { isUploading, uploadProgress, uploadError, currentStep } = useAppSelector(
+    const { isUploading, uploadProgress } = useAppSelector(
         (state) => state.scanning
     );
 
@@ -41,10 +34,6 @@ const ScanningScreen = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     // File/Image State
-    const [capturedImages, setCapturedImages] = useState<string[]>([]);
-    const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
-    const [showPreview, setShowPreview] = useState(false);
-    const [showPdfPreview, setShowPdfPreview] = useState(false);
 
     // Validation
     const validateInputs = () => {
@@ -62,7 +51,7 @@ const ScanningScreen = () => {
         }
 
         if (!isValid) {
-            setError('Please fix errors above');
+            setError('Please enter subject name and code');
         } else {
             setError('');
         }
@@ -73,9 +62,9 @@ const ScanningScreen = () => {
         setSubjectName(value);
 
         if (value.length > 100) {
-            setSubjectNameError('Max 100 chars');
+            setSubjectNameError('Max 100 characters allowed');
         } else if (!/^[a-zA-Z0-9\s]*$/.test(value)) {
-            setSubjectNameError('No special chars');
+            setSubjectNameError('Special characters not allowed');
         } else {
             setSubjectNameError('');
             if (!subjectCodeError) setError('');
@@ -86,9 +75,9 @@ const ScanningScreen = () => {
         setSubjectCode(value);
 
         if (value.length > 15) {
-            setSubjectCodeError('Max 15 chars');
+            setSubjectCodeError('Max 15 characters allowed');
         } else if (!/^[a-zA-Z0-9]*$/.test(value)) {
-            setSubjectCodeError('Alphanumeric only');
+            setSubjectCodeError('Only alphanumeric characters (A-Z, 0-9) allowed');
         } else {
             setSubjectCodeError('');
             if (!subjectNameError) setError('');
@@ -102,8 +91,12 @@ const ScanningScreen = () => {
             subjectName,
             subjectCode,
             onCaptureComplete: (images: string[]) => {
-                setCapturedImages(images);
-                setShowPreview(true);
+                // Instead of showing local modal, navigate to ImagePreview screen
+                navigation.navigate('ImagePreview', {
+                    subjectName,
+                    subjectCode,
+                    initialImages: images
+                });
             }
         });
     };
@@ -117,15 +110,26 @@ const ScanningScreen = () => {
                 allowMultiSelection: true,
             });
 
-            const formattedFiles = results.map(file => ({
-                uri: file.uri,
-                name: file.name || 'document.pdf',
-                type: file.type || 'application/pdf',
-                size: file.size,
-            }));
+            // Copy files to local cache so content:// URI permissions don't expire
+            const formattedFiles = await Promise.all(
+                results.map(async (file) => {
+                    const fileName = file.name || `document_${Date.now()}.pdf`;
+                    const destPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+                    await RNFS.copyFile(file.uri, destPath);
+                    return {
+                        uri: `file://${destPath}`,
+                        name: fileName,
+                        type: file.type || 'application/pdf',
+                        size: file.size,
+                    };
+                })
+            );
 
-            setSelectedFiles(formattedFiles);
-            setShowPdfPreview(true);
+            navigation.navigate('PdfPreview', {
+                subjectName,
+                subjectCode,
+                files: formattedFiles
+            });
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
                 // User cancelled
@@ -136,22 +140,17 @@ const ScanningScreen = () => {
         }
     };
 
-    const handleSuccessClose = () => {
-        dispatch(resetUpload());
-        setCapturedImages([]);
-        setSelectedFiles([]);
-        setShowPdfPreview(false);
-        setShowPreview(false);
-    };
-
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor={colors.darkBackground} />
 
             {/* Header */}
             <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
-                    <ArrowLeft color={colors.white} size={24} />
+                <TouchableOpacity onPress={() => navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Home' }]
+                })} style={styles.iconButton}>
+                    <Home color={colors.white} size={24} />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Scan Answer Sheet</Text>
                 <TouchableOpacity onPress={() => setIsSidebarOpen(true)} style={styles.iconButton}>
@@ -178,7 +177,12 @@ const ScanningScreen = () => {
                                 onChangeText={handleSubjectNameChange}
                             />
                         </View>
-                        {!!subjectNameError && <Text style={styles.fieldErrorText}>{subjectNameError}</Text>}
+                        <Text style={[
+                            styles.fieldHelperText,
+                            !!subjectNameError && { color: colors.error, fontWeight: '500' as const }
+                        ]}>
+                            {subjectNameError || 'Only characters allowed'}
+                        </Text>
                     </View>
 
                     <View style={[styles.inputContainer, { flex: 1, marginLeft: 8 }]}>
@@ -196,7 +200,12 @@ const ScanningScreen = () => {
                                 onChangeText={handleSubjectCodeChange}
                             />
                         </View>
-                        {!!subjectCodeError && <Text style={styles.fieldErrorText}>{subjectCodeError}</Text>}
+                        <Text style={[
+                            styles.fieldHelperText,
+                            !!subjectCodeError && { color: colors.error, fontWeight: '500' as const }
+                        ]}>
+                            {subjectCodeError || 'Alphanumeric only, no spaces'}
+                        </Text>
                     </View>
                 </View>
 
@@ -219,36 +228,39 @@ const ScanningScreen = () => {
                     </View>
                 )}
 
-                {/* Action Buttons - Compact */}
+                {/* Action Buttons - Unified Flow */}
                 <View style={styles.actionsContainer}>
+                    {/* Primary Action */}
                     <TouchableOpacity
-                        style={styles.compactActionCard}
+                        style={styles.primaryActionCard}
                         onPress={handleCameraStart}
-                        activeOpacity={0.7}
+                        activeOpacity={0.8}
                     >
-                        <View style={[styles.compactIconCircle, { backgroundColor: 'rgba(255, 107, 53, 0.1)' }]}>
-                            <Camera color={colors.primary} size={24} />
+                        <View style={styles.primaryIconWrapper}>
+                            <Camera color={colors.white} size={32} />
                         </View>
-                        <View style={styles.compactActionContent}>
-                            <Text style={styles.compactActionTitle}>Camera Scan</Text>
-                            <Text style={styles.compactActionDesc}>Take photos of sheets</Text>
+                        <View style={styles.primaryActionContent}>
+                            <Text style={styles.primaryActionTitle}>Scan Answer Sheets</Text>
+                            <Text style={styles.primaryActionDesc}>Open camera to capture pages</Text>
                         </View>
-                        <ChevronRight color={colors.darkTextSecondary} size={20} />
+                        <ChevronRight color={colors.white} size={24} style={{ opacity: 0.8 }} />
                     </TouchableOpacity>
 
+                    {/* Divider */}
+                    <View style={styles.dividerRow}>
+                        <View style={styles.dividerLine} />
+                        <Text style={styles.dividerText}>OR</Text>
+                        <View style={styles.dividerLine} />
+                    </View>
+
+                    {/* Secondary Action */}
                     <TouchableOpacity
-                        style={styles.compactActionCard}
+                        style={styles.secondaryActionCard}
                         onPress={handleFileUpload}
                         activeOpacity={0.7}
                     >
-                        <View style={[styles.compactIconCircle, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
-                            <FileText color={colors.error} size={24} />
-                        </View>
-                        <View style={styles.compactActionContent}>
-                            <Text style={styles.compactActionTitle}>Upload PDF</Text>
-                            <Text style={styles.compactActionDesc}>Select from device</Text>
-                        </View>
-                        <ChevronRight color={colors.darkTextSecondary} size={20} />
+                        <FileText color={colors.darkTextSecondary} size={20} />
+                        <Text style={styles.secondaryActionText}>Upload existing PDF</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -262,63 +274,6 @@ const ScanningScreen = () => {
             >
                 <ScanningSidebar onClose={() => setIsSidebarOpen(false)} />
             </Modal>
-
-            {/* Success Modal */}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={currentStep === 'success'}
-                onRequestClose={handleSuccessClose}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.successCard}>
-                        <TouchableOpacity style={styles.closeModalButton} onPress={handleSuccessClose}>
-                            <X color={colors.white} size={20} />
-                        </TouchableOpacity>
-                        <View style={styles.successIconCircle}>
-                            <CheckCircle color={colors.success} size={40} />
-                        </View>
-                        <Text style={styles.successTitle}>Upload Successful!</Text>
-                        <Text style={styles.successDesc}>Your answer sheet has been securely uploaded.</Text>
-
-                        <TouchableOpacity style={styles.successButtonMain} onPress={handleSuccessClose}>
-                            <Camera color="#fff" size={20} />
-                            <Text style={styles.successButtonText}>Scan Next Copy</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={styles.successButtonSecondary}
-                            onPress={() => {
-                                handleSuccessClose();
-                                navigation.navigate('Dashboard');
-                            }}
-                        >
-                            <Text style={styles.successButtonTextSec}>Start Evaluate</Text>
-                            <ChevronRight color={colors.primary} size={20} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-
-            {/* Preview Modals */}
-            <PreviewModal
-                isOpen={showPreview}
-                initialImages={capturedImages}
-                onClose={() => setShowPreview(false)}
-                onBack={() => setShowPreview(false)}
-                subjectName={subjectName}
-                subjectCode={subjectCode}
-            />
-
-            <PdfPreviewModal
-                isOpen={showPdfPreview}
-                files={selectedFiles}
-                onClose={() => setShowPdfPreview(false)}
-                onBack={() => setShowPdfPreview(false)}
-                subjectName={subjectName}
-                subjectCode={subjectCode}
-            />
-
         </View>
     );
 };
@@ -382,9 +337,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '500',
     },
-    fieldErrorText: {
-        color: colors.error,
-        fontSize: 12,
+    fieldHelperText: {
+        color: colors.darkTextSecondary,
+        fontSize: 11,
         marginTop: 4,
         marginLeft: 4,
     },
@@ -434,34 +389,71 @@ const styles = StyleSheet.create({
     actionsContainer: {
         gap: 12,
     },
-    compactActionCard: {
+    primaryActionCard: {
         flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: colors.primary,
+        padding: 20,
+        borderRadius: 20,
+        shadowColor: colors.primary,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.3,
+        shadowRadius: 16,
+        elevation: 8,
+    },
+    primaryIconWrapper: {
+        width: 56,
+        height: 56,
+        borderRadius: 16,
+        backgroundColor: 'rgba(255,255,255,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 16,
+    },
+    primaryActionContent: {
+        flex: 1,
+    },
+    primaryActionTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: colors.white,
+        marginBottom: 4,
+    },
+    primaryActionDesc: {
+        fontSize: 13,
+        color: 'rgba(255,255,255,0.8)',
+    },
+    dividerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 12,
+        paddingHorizontal: 20,
+    },
+    dividerLine: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#2C2C2E',
+    },
+    dividerText: {
+        color: colors.darkTextSecondary,
+        paddingHorizontal: 16,
+        fontSize: 12,
+        fontWeight: '600',
+    },
+    secondaryActionCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: colors.cardBlack || '#1C1C1E',
         padding: 16,
         borderRadius: 16,
         borderWidth: 1,
         borderColor: '#2C2C2E',
+        gap: 8,
     },
-    compactIconCircle: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 16,
-    },
-    compactActionContent: {
-        flex: 1,
-    },
-    compactActionTitle: {
-        fontSize: 16,
+    secondaryActionText: {
+        fontSize: 15,
         fontWeight: '600',
-        color: colors.white,
-        marginBottom: 2,
-    },
-    compactActionDesc: {
-        fontSize: 12,
         color: colors.darkTextSecondary,
     },
     modalOverlay: {

@@ -82,9 +82,6 @@ const initialState: ScanningState = {
     currentStep: 'input',
 };
 
-// Use base URL from axios instance or environment variable
-const API_URL = 'https://ai-evaluator.srv1240507.hstgr.cloud';
-
 // Helper for consistent error message extraction
 const extractErrorMessage = (error: any): string => {
     if (!error) return 'Something went wrong. Please try again.';
@@ -132,6 +129,10 @@ export const getPresignedUrls = createAsyncThunk(
     }
 );
 
+import { Platform } from 'react-native';
+
+// ...
+
 export const uploadToS3 = createAsyncThunk(
     'scanning/uploadToS3',
     async (
@@ -144,36 +145,53 @@ export const uploadToS3 = createAsyncThunk(
         try {
             const { presignedData, file } = payload;
 
-            // React Native fetch needs distinct handling compared to axios for binary uploads sometimes,
-            // but let's try axiosOriginal first.
-            // For React Native, 'file' is likely an object with uri, type, name.
+            // React Native FormData requires a specific object structure for files:
+            // { uri: '...', name: '...', type: '...' }
+            let fileUri = file.uri;
+            if (Platform.OS === 'android') {
+                // Ensure Android URIs start with file://
+                if (!fileUri.startsWith('file://')) {
+                    fileUri = `file://${fileUri}`;
+                }
+            } else if (Platform.OS === 'ios') {
+                // iOS often prefers stripped URIs for network requests
+                fileUri = fileUri.replace('file://', '');
+            }
 
             if (presignedData.fields && presignedData.base_url) {
                 const formData = new FormData();
+                // 1. Append all presigned fields FIRST (strict order for S3)
                 Object.entries(presignedData.fields).forEach(([key, value]) => {
                     formData.append(key, value as string);
                 });
 
-                // Append file last.
-                // In React Native, FormData expects { uri, name, type }
+                // 2. Append the file LAST
                 formData.append('file', {
-                    uri: file.uri,
+                    uri: fileUri,
                     name: file.name,
-                    type: file.type || 'image/jpeg', // Default or from file
+                    type: file.type || 'image/jpeg',
                 } as any);
 
                 console.log('⬆️ Attempting POST upload (multipart) to:', presignedData.base_url);
+                console.log('📄 File URI:', fileUri);
+
+                // Switch back to axiosOriginal as per user request to match React impl
+                // Important: Do NOT set Content-Type manually for FormData in Axios/RN, 
+                // otherwise the boundary is missing and S3 rejects it or network fails.
                 await axiosOriginal.post(presignedData.base_url, formData, {
                     headers: {
+                        'Accept': 'application/json',
                         'Content-Type': 'multipart/form-data',
+                    },
+                    transformRequest: (data) => {
+                        // Important: Return data as is, don't let axios maintainers stringify it
+                        return data;
                     },
                 });
             } else {
                 console.log('⬆️ Attempting PUT upload to:', presignedData.url);
 
-                // Fetch blob from URI if needed, or pass file directly if supported
-                // For direct PUT with fetch/axios in RN, we often need to read the file as blob or arraybuffer
-                // Simplified approach: using fetch with blob
+                // Use axiosOriginal for PUT as well
                 const response = await fetch(file.uri);
                 const blob = await response.blob();
 
@@ -189,11 +207,17 @@ export const uploadToS3 = createAsyncThunk(
             return {
                 file_name: file.name,
                 s3_url: presignedData.url,
-                file_size: file.size || 0, // changes if reading blob
+                file_size: file.size || 0,
                 mime_type: file.type,
             };
         } catch (error: any) {
             console.error("Upload error:", error);
+            // Enhanced error logging for network failures
+            if (error.response) {
+                console.error("S3 Error Response:", error.response.status, error.response.data);
+                // Throw an error with the response data if available so we can see it
+                return rejectWithValue(error.response.data || extractErrorMessage(error));
+            }
             return rejectWithValue(extractErrorMessage(error));
         }
     }
@@ -253,6 +277,7 @@ export const uploadFiles = createAsyncThunk(
                 }
             );
 
+            // If any upload fails, Promise.all will reject, bubbling to the catch block
             const uploadedMetadata = await Promise.all(uploadPromises);
 
             const metadataResponse = await dispatch(
@@ -267,6 +292,7 @@ export const uploadFiles = createAsyncThunk(
 
             return metadataResponse;
         } catch (error: any) {
+            console.error('Error in uploadFiles thunk:', error);
             return rejectWithValue(extractErrorMessage(error));
         }
     }
@@ -381,6 +407,7 @@ const scanningSlice = createSlice({
             .addCase(uploadFiles.rejected, (state, action) => {
                 state.isUploading = false;
                 state.uploadError = action.payload as string;
+                state.uploadProgress = 0; // Reset progress
                 state.currentStep = 'error';
             });
 

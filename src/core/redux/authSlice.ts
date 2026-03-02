@@ -112,5 +112,21 @@ const authSlice = createSlice({
     },
 });
 
+// Async thunk for logout
+export const logoutUser = createAsyncThunk(
+    'auth/logoutUser',
+    async (_, { dispatch }) => {
+        try {
+            await storage.removeAuthToken();
+            await storage.removeUserData();
+            dispatch(logout());
+        } catch (error) {
+            console.error('Error during logout:', error);
+            // Still dispatch logout even if storage removal fails
+            dispatch(logout());
+        }
+    }
+);
+
 export const { logout, clearError, setAuthFromStorage } = authSlice.actions;
 export default authSlice.reducer;

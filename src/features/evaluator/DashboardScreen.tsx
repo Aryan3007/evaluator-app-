@@ -8,15 +8,12 @@ import {
     TextInput,
     ActivityIndicator,
     RefreshControl,
-    Dimensions,
     StatusBar,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Search, Filter, Calendar, TrendingUp, ChevronRight, X, ArrowLeft, SortAsc, SortDesc } from 'lucide-react-native';
+import { Search, Calendar, TrendingUp, X, ArrowLeft, SortAsc, SortDesc } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
-import { spacing, borderRadius } from '../../theme/spacing';
-import { typography } from '../../theme/typography';
 import { fetchPaperCodes, setSelectedPaperId } from '../../core/redux/evaluatorSlice';
 import { PaperCode } from '../../core/redux/types';
 
@@ -32,7 +29,6 @@ function useDebounce<T>(value: T, delay: number): T {
     return debouncedValue;
 }
 
-const { width } = Dimensions.get('window');
 
 export const DashboardScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const dispatch = useDispatch<any>();
@@ -189,25 +185,26 @@ export const DashboardScreen: React.FC<{ navigation: any }> = ({ navigation }) =
                     <Search size={20} color={colors.darkTextSecondary} style={styles.searchIcon} />
                     <TextInput
                         style={styles.searchInput}
-                        placeholder="Search by subject or paper code..."
+                        placeholder="Subject or Paper code..."
                         placeholderTextColor={colors.darkTextSecondary}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                     />
                     {searchQuery.length > 0 && (
-                        <TouchableOpacity onPress={() => setSearchQuery('')}>
+                        <TouchableOpacity onPress={() => setSearchQuery('')} style={styles.clearIconButton}>
                             <X size={18} color={colors.darkTextSecondary} />
                         </TouchableOpacity>
                     )}
-                    <TouchableOpacity onPress={toggleSort}>
-                        {sortOrder === 'desc' ? (
-                            <SortDesc size={18} color={colors.darkTextSecondary} />
-                        ) : (
-                            <SortAsc size={18} color={colors.darkTextSecondary} />
-                        )}
-                    </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={toggleSort} style={styles.sortButton}>
+                    {sortOrder === 'desc' ? (
+                        <SortDesc size={20} color={colors.darkTextSecondary} />
+                    ) : (
+                        <SortAsc size={20} color={colors.darkTextSecondary} />
+                    )}
+                </TouchableOpacity>
             </View>
+
 
             <View style={styles.filtersContainer}>
                 <FlatList
@@ -284,8 +281,12 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkBackground || '#000000',
         paddingHorizontal: 20,
         paddingVertical: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
     },
     searchInputContainer: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: colors.cardBlack || '#1C1C1E',
@@ -303,6 +304,19 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: colors.white,
         height: '100%',
+    },
+    clearIconButton: {
+        marginLeft: 8,
+    },
+    sortButton: {
+        width: 48,
+        height: 48,
+        backgroundColor: colors.cardBlack || '#1C1C1E',
+        borderRadius: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#2C2C2E',
     },
     filtersContainer: {
         backgroundColor: colors.darkBackground || '#000000',

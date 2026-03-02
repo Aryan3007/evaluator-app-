@@ -16,10 +16,16 @@ class MainActivity : ReactActivity() {
 
   // Use dispatchKeyEvent instead of onKeyDown — intercepts BEFORE Android swallows volume keys
   override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+      val isVolumeKey = event.keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+                        event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
       if (event.action == KeyEvent.ACTION_DOWN) {
           KeyEventModule.getInstance().onKeyDownEvent(event.keyCode, event)
       } else if (event.action == KeyEvent.ACTION_UP) {
           KeyEventModule.getInstance().onKeyUpEvent(event.keyCode, event)
+      }
+      // Consume volume keys to prevent system volume slider from showing
+      if (isVolumeKey) {
+          return true
       }
       return super.dispatchKeyEvent(event)
   }

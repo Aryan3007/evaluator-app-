@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
     View,
     Text,
@@ -9,17 +9,14 @@ import {
     ActivityIndicator,
     Alert,
     StatusBar,
-    Pressable,
-    Linking,
     Modal,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { colors } from '../../theme/colors';
-import { spacing, borderRadius } from '../../theme/spacing';
-import { typography } from '../../theme/typography';
+
 import { fetchAnswerSheets, evaluateAnswerCopies } from '../../core/redux/evaluatorSlice';
 import { AnswerSheet } from '../../core/redux/types';
-import { FileText, ChevronRight, AlertTriangle, ArrowLeft, Square, CheckSquare, Play, RotateCw, CheckCircle, Clock, Eye, Filter } from 'lucide-react-native';
+import { FileText, ChevronRight, AlertTriangle, ArrowLeft, Square, CheckSquare, RotateCw, CheckCircle, Clock, Eye, Filter } from 'lucide-react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PdfViewerModal } from '../scanning/components/PdfViewerModal';
@@ -135,6 +132,12 @@ export const DetailsScreen: React.FC<{ navigation: any; route: any }> = ({
             Alert.alert('Error', error.toString());
         }
     };
+
+    // PDF handler — defined before early return so hooks aren't called conditionally
+    const handlePdfClose = useCallback(() => {
+        setIsPdfVisible(false);
+        setSelectedPdfUrl(null);
+    }, []);
 
     // If paper status is pending, show Setup Required state
     if (paper?.status === 'pending') {
@@ -440,10 +443,7 @@ export const DetailsScreen: React.FC<{ navigation: any; route: any }> = ({
             <PdfViewerModal
                 visible={isPdfVisible}
                 fileUri={selectedPdfUrl || ''}
-                onClose={() => {
-                    setIsPdfVisible(false);
-                    setSelectedPdfUrl(null);
-                }}
+                onClose={handlePdfClose}
             />
         </View>
     );
@@ -765,5 +765,42 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: colors.white,
         fontSize: 16,
+    },
+    progressOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.65)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    progressCard: {
+        backgroundColor: colors.cardBlack || '#1C1C1E',
+        borderRadius: 20,
+        padding: 32,
+        alignItems: 'center',
+        width: 280,
+        gap: 16,
+        borderWidth: 1,
+        borderColor: '#2C2C2E',
+    },
+    progressTitle: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: colors.white,
+    },
+    progressSubtitle: {
+        fontSize: 13,
+        color: colors.darkTextSecondary,
+    },
+    progressBarTrack: {
+        width: '100%',
+        height: 6,
+        backgroundColor: '#2C2C2E',
+        borderRadius: 3,
+        overflow: 'hidden',
+    },
+    progressBarFill: {
+        height: '100%',
+        backgroundColor: colors.primary,
+        borderRadius: 3,
     },
 });

@@ -14,13 +14,11 @@ import {
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { useDispatch } from 'react-redux';
-import { Upload, FileText, CheckCircle, ArrowLeft, X, Eye, RefreshCw } from 'lucide-react-native';
+import { Upload, FileText, ArrowLeft, X, Eye, RefreshCw } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
-import { spacing, borderRadius } from '../../theme/spacing';
-import { typography } from '../../theme/typography';
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { startEvaluation } from '../../core/redux/evaluatorSlice';
-import { PaperCode } from '../../core/redux/types';
 import axiosInstance from '../../core/api/axios';
 import { PdfViewerModal } from '../scanning/components/PdfViewerModal';
 
@@ -71,7 +69,7 @@ const EvaluatorSetupScreen: React.FC<{ navigation: any, route: any }> = ({ navig
                 rules: rules || "none"
             })).unwrap();
 
-            Alert.alert('Success', 'Evaluation started successfully!', [
+            Alert.alert('Success', 'Question paper uploaded successfully!', [
                 { text: 'OK', onPress: () => navigation.goBack() }
             ]);
 

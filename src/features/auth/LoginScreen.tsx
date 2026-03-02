@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -13,22 +13,20 @@ import {
 } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
-import { Mail, Lock, Eye, EyeOff, Check, ArrowRight } from 'lucide-react-native';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react-native';
 import { AppDispatch, RootState } from '../../app/store';
-import { loginUser, clearError } from '../../core/redux/authSlice';
+import { loginUser } from '../../core/redux/authSlice';
 import { colors } from '../../theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { typography } from '../../theme/typography';
 
 export const LoginScreen: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
     const insets = useSafeAreaInsets();
 
     const dispatch = useDispatch<AppDispatch>();
-    const { isLoading, error } = useSelector((state: RootState) => state.auth);
+    const { isLoading } = useSelector((state: RootState) => state.auth);
 
     const handleLogin = async () => {
         if (!email || !password) {
