@@ -8,11 +8,11 @@ const audioCache: Record<string, Sound> = {};
 // String filenames matching files in android/app/src/main/res/raw/ (Android)
 // and the Xcode bundle (iOS). react-native-sound needs string names, NOT require().
 const AUDIO_MAP: Record<string, string> = {
-    shutter: 'shutter.mp3',
-    popup: 'pop_upp.mp3',
-    confirm: 'yes.mp3',
-    success: 'success.mp3',
-    error: 'error.mp3',
+    shutter: 'shutter',
+    popup: 'pop_upp',
+    confirm: 'yes',
+    success: 'success',
+    error: 'error',
 };
 
 export type AudioType = keyof typeof AUDIO_MAP;
@@ -32,18 +32,24 @@ export const preloadSounds = () => {
 };
 
 export const playAudio = (type: AudioType) => {
-    const sound = audioCache[type];
-    if (sound) {
-        // Reset position and play immediately — avoids async stop() callback delay
-        sound.stop();
-        sound.setCurrentTime(0);
-        sound.play((success) => {
-            if (!success) {
-                console.warn(`[sounds.ts] Failed to play sound ${type}`);
+    const cached = audioCache[type];
+    if (cached) {
+        // For short clips, stop()+play() races on the native bridge in release builds.
+        // Create a fresh instance each time so MediaPlayer state is always clean.
+        const fresh = new Sound(AUDIO_MAP[type], Sound.MAIN_BUNDLE, (error) => {
+            if (error) {
+                console.warn(`[sounds.ts] Failed to load sound ${type}`, error);
+                return;
             }
+            fresh.play((success) => {
+                if (!success) {
+                    console.warn(`[sounds.ts] Failed to play sound ${type}`);
+                }
+                fresh.release();
+            });
         });
     } else {
-        // If not preloaded, dynamically load and play
+        // First-time load (preload missed or not called yet)
         const newSound = new Sound(AUDIO_MAP[type], Sound.MAIN_BUNDLE, (error) => {
             if (error) {
                 console.warn(`[sounds.ts] Failed to load sound dynamically ${type}`);

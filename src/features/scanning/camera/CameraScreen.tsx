@@ -8,15 +8,18 @@ import {
     FlatList,
     StatusBar,
     Platform,
-    PermissionsAndroid,
     ActivityIndicator,
-    InteractionManager,
+    Linking,
 } from 'react-native';
-import { Camera, CameraType } from 'react-native-camera-kit';
+import {
+    Camera,
+    useCameraDevice,
+    useCameraPermission,
+    PhotoFile,
+} from 'react-native-vision-camera';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { X, Trash2, CheckCircle, Zap } from 'lucide-react-native';
 import KeyEvent from 'react-native-keyevent';
-import ImageResizer from 'react-native-image-resizer';
 import { ImageViewerModal } from '../components/ImageViewerModal';
 import { ActionPopupModal } from '../components/ActionPopupModal';
 import { backgroundUpload } from '../utils/backgroundUpload';
@@ -56,15 +59,18 @@ const CameraScreen = () => {
     const dispatch = useAppDispatch();
     const { subjectName, subjectCode, initialImages = [] } = route.params || {};
 
-    const camera = useRef<any>(null);
+    const camera = useRef<Camera>(null);
     const flatListRef = useRef<FlatList>(null);
     const isCapturing = useRef(false);
     const captureQueue = useRef(0);
 
+    // ── Vision Camera hooks ──
+    const device = useCameraDevice('back');
+    const { hasPermission, requestPermission } = useCameraPermission();
+
     // ── State ──
     const [images, setImages] = useState<string[]>(initialImages);
     const [flash, setFlash] = useState<'on' | 'off'>('off');
-    const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
     const [popupVisible, setPopupVisible] = useState(false);
     const [copyNumber, setCopyNumber] = useState(1);
@@ -106,23 +112,13 @@ const CameraScreen = () => {
         }
     }, [popupVisible]);
 
-    // Permissions
+    // Request permission on mount
     useEffect(() => {
-        const requestPermission = async () => {
-            if (Platform.OS === 'android') {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                );
-                setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
-            } else {
-                setHasPermission(true);
-            }
-        };
-        requestPermission();
-
-        // Preload custom mp3 files into memory so they play instantly
+        if (!hasPermission) {
+            requestPermission();
+        }
         preloadSounds();
-    }, []);
+    }, [hasPermission, requestPermission]);
 
     // ── Sound helpers ──
     const playSound = useCallback((type: 'shutter' | 'popup' | 'confirm' | 'success' | 'error') => {
@@ -146,6 +142,8 @@ const CameraScreen = () => {
     }, []);
 
     // ── Capture ──
+    // Uses takeSnapshot() which captures exactly what's visible in the viewfinder
+    // — no aspect ratio mismatch between preview and captured image
     const handleCapture = useCallback(async () => {
         if (!camera.current) return;
 
@@ -157,28 +155,15 @@ const CameraScreen = () => {
         isCapturing.current = true;
 
         try {
-            const photo = await camera.current.capture();
-            if (photo && photo.uri) {
+            const snapshot: PhotoFile = await camera.current.takeSnapshot({
+                quality: 100,
+            });
+            if (snapshot?.path) {
                 playSound('shutter');
-                // Add raw URI immediately so the thumbnail shows instantly
-                setImages(prev => [...prev, photo.uri]);
+                const uri = `file://${snapshot.path}`;
+                setImages(prev => [...prev, uri]);
                 requestAnimationFrame(() => {
                     flatListRef.current?.scrollToEnd({ animated: true });
-                });
-                // Resize in the background after animations settle
-                InteractionManager.runAfterInteractions(async () => {
-                    try {
-                        const resized = await ImageResizer.createResizedImage(
-                            photo.uri, 1200, 1600, 'JPEG', 70, 0, undefined, false,
-                            { mode: 'contain', onlyScaleDown: true },
-                        );
-                        // Swap raw URI with resized URI
-                        setImages(prev =>
-                            prev.map(uri => (uri === photo.uri ? resized.uri : uri)),
-                        );
-                    } catch (resizeErr) {
-                        console.warn('Resize failed, keeping original:', resizeErr);
-                    }
                 });
             }
         } catch (error) {
@@ -380,46 +365,48 @@ const CameraScreen = () => {
         }
     };
 
+    // ── No device available ──
+    if (!device) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.centerContent}>
+                    <Text style={styles.permissionText}>No camera device found.</Text>
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar hidden />
 
-            {/* Permission: loading */}
-            {hasPermission === null && (
-                <View style={styles.centerContent}>
-                    <Text style={styles.permissionText}>Requesting camera permission...</Text>
-                </View>
-            )}
-
-            {/* Permission: denied */}
-            {hasPermission === false && (
+            {/* Permission: not granted */}
+            {!hasPermission && (
                 <View style={styles.centerContent}>
                     <Text style={styles.permissionText}>Camera permission is required.</Text>
                     <TouchableOpacity
                         style={styles.permButton}
-                        onPress={async () => {
-                            const granted = await PermissionsAndroid.request(
-                                PermissionsAndroid.PERMISSIONS.CAMERA,
-                            );
-                            setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
+                        onPress={() => {
+                            Linking.openSettings();
                         }}
                     >
-                        <Text style={styles.permButtonText}>Grant Permission</Text>
+                        <Text style={styles.permButtonText}>Open Settings</Text>
                     </TouchableOpacity>
                 </View>
             )}
 
             {/* Main Content */}
-            {hasPermission === true && (
+            {hasPermission && (
                 <View style={styles.contentContainer}>
                     <Camera
                         ref={camera}
                         style={StyleSheet.absoluteFill}
-                        cameraType={CameraType.Back}
-                        flashMode={flash}
-                        zoomMode="on"
+                        device={device}
+                        isActive={true}
+                        photo={true}
+                        enableZoomGesture={true}
+                        torch={flash}
                         resizeMode="cover"
-                        shutterPhotoSound={false}
                     />
 
                     {/* Top Bar */}
@@ -658,7 +645,11 @@ const styles = StyleSheet.create({
     badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
 
     finishOverlay: {
-        ...StyleSheet.absoluteFillObject,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.85)',
         justifyContent: 'center',
         alignItems: 'center',
