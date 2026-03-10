@@ -5,12 +5,12 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    ScrollView,
+    FlatList,
     StatusBar,
     Platform,
     PermissionsAndroid,
-    NativeModules,
     ActivityIndicator,
+    InteractionManager,
 } from 'react-native';
 import { Camera, CameraType } from 'react-native-camera-kit';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -24,16 +24,31 @@ import { fetchFileHistory } from '../../../core/redux/scanningSlice';
 import { useAppDispatch } from '../../../core/hooks/useRedux';
 import { preloadSounds, playAudio } from '../../../utils/sounds';
 
-const { ShutterSound } = NativeModules;
-
 const KEYCODE_VOLUME_UP = 24;
 const KEYCODE_VOLUME_DOWN = 25;
-const LONG_PRESS_DURATION = 3000; // ms — hold volume key for 3s to show popup
+const LONG_PRESS_DURATION = 1500; // ms — hold volume key for 1.5s to show popup
 
 interface UploadEntry {
     pdfName: string;
     status: 'uploading' | 'success' | 'error';
 }
+
+// ── Memoized thumbnail to avoid re-rendering every item on state change ──
+const ImageThumbnail = React.memo(({
+    uri, index, onPress, onRemove,
+}: {
+    uri: string; index: number; onPress: (i: number) => void; onRemove: (i: number) => void;
+}) => (
+    <TouchableOpacity style={styles.gridItem} onPress={() => onPress(index)}>
+        <Image source={{ uri }} style={styles.gridImage} />
+        <View style={styles.gridBadge}>
+            <Text style={styles.gridBadgeText}>{index + 1}</Text>
+        </View>
+        <TouchableOpacity style={styles.gridDelete} onPress={() => onRemove(index)}>
+            <X size={12} color="#fff" />
+        </TouchableOpacity>
+    </TouchableOpacity>
+));
 
 const CameraScreen = () => {
     const navigation = useNavigation<any>();
@@ -42,7 +57,7 @@ const CameraScreen = () => {
     const { subjectName, subjectCode, initialImages = [] } = route.params || {};
 
     const camera = useRef<any>(null);
-    const scrollViewRef = useRef<ScrollView>(null);
+    const flatListRef = useRef<FlatList>(null);
     const isCapturing = useRef(false);
     const captureQueue = useRef(0);
 
@@ -113,7 +128,7 @@ const CameraScreen = () => {
     const playSound = useCallback((type: 'shutter' | 'popup' | 'confirm' | 'success' | 'error') => {
         switch (type) {
             case 'shutter':
-                ShutterSound?.play();
+                playAudio('shutter');
                 break;
             case 'popup':
                 playAudio('popup');
@@ -144,16 +159,26 @@ const CameraScreen = () => {
         try {
             const photo = await camera.current.capture();
             if (photo && photo.uri) {
-                // Sound AFTER successful capture — stays in sync with UI
                 playSound('shutter');
-                // Resize immediately (1 image = ~50ms) so PDF generation stays fast even with 40+ images
-                const resized = await ImageResizer.createResizedImage(
-                    photo.uri, 1200, 1600, 'JPEG', 70, 0, undefined, false,
-                    { mode: 'contain', onlyScaleDown: true },
-                );
-                setImages(prev => [...prev, resized.uri]);
+                // Add raw URI immediately so the thumbnail shows instantly
+                setImages(prev => [...prev, photo.uri]);
                 requestAnimationFrame(() => {
-                    scrollViewRef.current?.scrollToEnd({ animated: true });
+                    flatListRef.current?.scrollToEnd({ animated: true });
+                });
+                // Resize in the background after animations settle
+                InteractionManager.runAfterInteractions(async () => {
+                    try {
+                        const resized = await ImageResizer.createResizedImage(
+                            photo.uri, 1200, 1600, 'JPEG', 70, 0, undefined, false,
+                            { mode: 'contain', onlyScaleDown: true },
+                        );
+                        // Swap raw URI with resized URI
+                        setImages(prev =>
+                            prev.map(uri => (uri === photo.uri ? resized.uri : uri)),
+                        );
+                    } catch (resizeErr) {
+                        console.warn('Resize failed, keeping original:', resizeErr);
+                    }
                 });
             }
         } catch (error) {
@@ -316,9 +341,9 @@ const CameraScreen = () => {
         });
     };
 
-    const handleRemoveImage = (index: number) => {
+    const handleRemoveImage = useCallback((index: number) => {
         setImages(prev => prev.filter((_, i) => i !== index));
-    };
+    }, []);
 
     const handleDeleteFromPreview = () => {
         if (selectedImageIndex !== null) {
@@ -326,6 +351,24 @@ const CameraScreen = () => {
             setSelectedImageIndex(null);
         }
     };
+
+    // ── FlatList helpers (stable references to avoid re-renders) ──
+    const THUMB_WIDTH = 60;
+    const THUMB_GAP = 12;
+    const keyExtractor = useCallback((_: string, index: number) => `thumb-${index}`, []);
+    const getItemLayout = useCallback((_: any, index: number) => ({
+        length: THUMB_WIDTH + THUMB_GAP,
+        offset: (THUMB_WIDTH + THUMB_GAP) * index,
+        index,
+    }), []);
+    const renderThumbnail = useCallback(({ item, index }: { item: string; index: number }) => (
+        <ImageThumbnail
+            uri={item}
+            index={index}
+            onPress={setSelectedImageIndex}
+            onRemove={handleRemoveImage}
+        />
+    ), [handleRemoveImage]);
 
     const handleCropSave = (newUri: string) => {
         if (selectedImageIndex !== null) {
@@ -432,33 +475,20 @@ const CameraScreen = () => {
                     {/* Floating Images Grid Overlay */}
                     {images.length > 0 && (
                         <View style={styles.imagesGridOverlay}>
-                            <ScrollView
+                            <FlatList
+                                ref={flatListRef}
+                                data={images}
                                 horizontal
-                                ref={scrollViewRef}
+                                keyExtractor={keyExtractor}
+                                renderItem={renderThumbnail}
                                 contentContainerStyle={styles.gridContent}
                                 showsHorizontalScrollIndicator={false}
-                            >
-                                <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 20 }}>
-                                    {images.map((img, idx) => (
-                                        <TouchableOpacity
-                                            key={idx}
-                                            style={styles.gridItem}
-                                            onPress={() => setSelectedImageIndex(idx)}
-                                        >
-                                            <Image source={{ uri: img }} style={styles.gridImage} />
-                                            <View style={styles.gridBadge}>
-                                                <Text style={styles.gridBadgeText}>{idx + 1}</Text>
-                                            </View>
-                                            <TouchableOpacity
-                                                style={styles.gridDelete}
-                                                onPress={() => handleRemoveImage(idx)}
-                                            >
-                                                <X size={12} color="#fff" />
-                                            </TouchableOpacity>
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            </ScrollView>
+                                getItemLayout={getItemLayout}
+                                initialNumToRender={8}
+                                maxToRenderPerBatch={5}
+                                windowSize={5}
+                                removeClippedSubviews={true}
+                            />
                         </View>
                     )}
 
@@ -490,7 +520,7 @@ const CameraScreen = () => {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                style={[styles.secondaryBtn, { backgroundColor: images.length > 0 ? '#fff' : '#27272a' }]}
+                                style={[styles.secondaryBtn, images.length > 0 && styles.secondaryBtnActive]}
                                 onPress={handleSubmit}
                                 disabled={images.length === 0}
                             >
@@ -530,7 +560,7 @@ const CameraScreen = () => {
             {finishUploading && (
                 <View style={styles.finishOverlay}>
                     <ActivityIndicator size="large" color="#fff" />
-                    <Text style={styles.finishOverlayText}>Finishing Uploading PDF...</Text>
+                    <Text style={styles.finishOverlayText}>Uploading images...</Text>
                     <Text style={styles.finishOverlayText}>Redirecting to Home in few seconds...</Text>
                 </View>
             )}
@@ -596,8 +626,9 @@ const styles = StyleSheet.create({
     },
     gridContent: {
         paddingVertical: 10,
+        paddingHorizontal: 20,
     },
-    gridItem: { width: 60, height: 80, borderRadius: 8, overflow: 'hidden', backgroundColor: '#333', position: 'relative', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
+    gridItem: { width: 60, height: 80, marginRight: 12, borderRadius: 8, overflow: 'hidden', backgroundColor: '#333', position: 'relative', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
     gridImage: { width: '100%', height: '100%' },
     gridBadge: { position: 'absolute', bottom: 2, right: 2, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 4, borderRadius: 3 },
     gridBadgeText: { color: '#fff', fontSize: 8, fontWeight: '700' },
@@ -617,6 +648,7 @@ const styles = StyleSheet.create({
     captureBtn: { width: 80, height: 80, borderRadius: 40, borderWidth: 4, borderColor: '#fff', alignItems: 'center', justifyContent: 'center' },
     captureInner: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#fff' },
     secondaryBtn: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#27272a', alignItems: 'center', justifyContent: 'center', position: 'relative' },
+    secondaryBtnActive: { backgroundColor: '#fff' },
     badge: {
         position: 'absolute', top: -5, right: -5,
         backgroundColor: '#6366f1', borderRadius: 10,

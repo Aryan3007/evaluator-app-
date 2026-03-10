@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -13,6 +13,7 @@ import { ArrowRight, Scan, FileText, LogOut } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootState } from '../../app/store';
 import { logoutUser } from '../../core/redux/authSlice';
+import api from '../../core/api/axios';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
@@ -22,6 +23,15 @@ export const HomeScreen: React.FC = () => {
     const dispatch = useDispatch<any>();
     const insets = useSafeAreaInsets();
     const user = useSelector((state: RootState) => state.auth.user);
+
+    // Verify session is still valid on mount — logout if token expired
+    useEffect(() => {
+        api.get('/api/auth/me').catch((err: any) => {
+            if (err.response?.status === 401) {
+                dispatch(logoutUser());
+            }
+        });
+    }, [dispatch]);
 
     const handleLogout = () => {
         dispatch(logoutUser());

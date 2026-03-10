@@ -362,7 +362,7 @@ export const DetailsScreen: React.FC<{ navigation: any; route: any }> = ({
                         <Clock size={20} color={colors.warning} />
                     </View>
                     <View>
-                        <Text style={styles.statValue}>{answerSheetsTotal - answerSheetsCompleted}</Text>
+                        <Text style={styles.statValue}>{Math.max(0, answerSheetsTotal - answerSheetsCompleted)}</Text>
                         <Text style={styles.statLabel}>Pending</Text>
                     </View>
                 </View>

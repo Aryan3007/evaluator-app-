@@ -32,14 +32,11 @@ export const PdfViewerModal: React.FC<Props> = ({ visible, fileUri, onClose, fil
                 if (fileUri.startsWith('http://') || fileUri.startsWith('https://')) {
                     // ── Remote URL ────────────────────────────────────────────────────────
                     // Open directly in the system browser / PDF viewer.
-                    // This is instant, works on all devices, and avoids FileProvider issues.
-                    // iOS Safari and Android Chrome both render PDFs natively.
-                    const canOpen = await Linking.canOpenURL(fileUri);
-                    if (canOpen) {
-                        await Linking.openURL(fileUri);
-                    } else {
-                        Alert.alert('Cannot Open', 'Unable to open this URL on your device.');
-                    }
+                    // NOTE: We skip canOpenURL() here — on Android 11+ it returns false for
+                    // https:// URLs unless QUERY_ALL_PACKAGES is declared in the manifest,
+                    // even though every device has a browser that can open the link.
+                    // If openURL truly fails the catch block below handles it.
+                    await Linking.openURL(fileUri);
                 } else {
                     // ── Local file (file:// or content://) ───────────────────────────────
                     // For local files we still download + open with a native viewer

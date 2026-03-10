@@ -8,6 +8,7 @@ const audioCache: Record<string, Sound> = {};
 // String filenames matching files in android/app/src/main/res/raw/ (Android)
 // and the Xcode bundle (iOS). react-native-sound needs string names, NOT require().
 const AUDIO_MAP: Record<string, string> = {
+    shutter: 'shutter.mp3',
     popup: 'pop_upp.mp3',
     confirm: 'yes.mp3',
     success: 'success.mp3',
@@ -33,13 +34,13 @@ export const preloadSounds = () => {
 export const playAudio = (type: AudioType) => {
     const sound = audioCache[type];
     if (sound) {
-        // Stop it if it's currently playing, then play it again
-        sound.stop(() => {
-            sound.play((success) => {
-                if (!success) {
-                    console.warn(`[sounds.ts] Failed to play sound ${type}`);
-                }
-            });
+        // Reset position and play immediately — avoids async stop() callback delay
+        sound.stop();
+        sound.setCurrentTime(0);
+        sound.play((success) => {
+            if (!success) {
+                console.warn(`[sounds.ts] Failed to play sound ${type}`);
+            }
         });
     } else {
         // If not preloaded, dynamically load and play

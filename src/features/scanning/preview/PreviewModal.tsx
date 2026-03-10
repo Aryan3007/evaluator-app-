@@ -13,8 +13,6 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { Trash2, Upload, Plus, ChevronLeft } from 'lucide-react-native';
-import { uploadFiles } from '../../../core/redux/scanningSlice';
-import { useAppDispatch, useAppSelector } from '../../../core/hooks/useRedux';
 import { colors } from '../../../theme/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import RNImageToPdf from 'react-native-image-to-pdf';
@@ -22,6 +20,7 @@ import ImageResizer from 'react-native-image-resizer';
 import { PdfViewerModal } from '../components/PdfViewerModal';
 import { FileText } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
+import { backgroundUpload } from '../utils/backgroundUpload';
 
 export const PreviewScreen: React.FC = () => {
     const navigation = useNavigation<any>();
@@ -33,8 +32,6 @@ export const PreviewScreen: React.FC = () => {
         onAddMore
     } = route.params || {};
 
-    const dispatch = useAppDispatch();
-    const { isUploading, uploadProgress } = useAppSelector((state) => state.scanning);
     const [images, setImages] = useState<string[]>(initialImages);
 
     // Sync images with initialImages when params change (e.g. after upload reset)
@@ -109,42 +106,21 @@ export const PreviewScreen: React.FC = () => {
     const handleSubmit = async () => {
         if (images.length === 0) return;
 
-        if (!RNImageToPdf) {
-            Alert.alert('Error', 'PDF Module not linked. Please rebuild the app.');
-            return;
-        }
-
         setIsPreparingUpload(true);
 
         try {
-            const processedImages = await processImagesForPdf(images);
             const pdfName = `${subjectCode}_${Date.now()}.pdf`;
-            const options = {
-                imagePaths: processedImages.map(img => img.replace('file://', '')),
-                name: pdfName,
-                // maxSize: { width: 1240, height: 1754 }, // Removed to prevent resizing
-                quality: 1.0,
-            };
 
-            const pdf = await RNImageToPdf.createPDFbyImages(options);
-            const pdfUri = pdf.filePath;
-
-            // Prepare single PDF file for upload
-            const filesToUpload = [{
-                file_name: pdfName,
-                file_type: 'application/pdf',
-                file: {
-                    uri: pdfUri,
-                    name: pdfName,
-                    type: 'application/pdf',
-                }
-            }];
-
-            await dispatch(uploadFiles({
-                subject_name: subjectName,
-                paper_code: subjectCode,
-                files: filesToUpload
-            })).unwrap();
+            await new Promise<void>((resolve, reject) => {
+                backgroundUpload({
+                    images,
+                    subjectName,
+                    subjectCode,
+                    pdfName,
+                    onSuccess: () => resolve(),
+                    onError: (error) => reject(new Error(error)),
+                });
+            });
 
             Toast.show({
                 type: 'success',
@@ -154,7 +130,6 @@ export const PreviewScreen: React.FC = () => {
                 visibilityTime: 3000,
             });
 
-            // Reset navigation to Scanning and CameraScreen to clear the rest of the stack
             navigation.reset({
                 index: 1,
                 routes: [
@@ -169,9 +144,10 @@ export const PreviewScreen: React.FC = () => {
                     }
                 ],
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
-            Alert.alert('Upload Failed', typeof error === 'string' ? error : 'Failed to generate or upload PDF');
+            const message = error instanceof Error ? error.message : 'Upload failed';
+            Alert.alert('Upload Failed', message);
         } finally {
             setIsPreparingUpload(false);
         }
@@ -216,7 +192,7 @@ export const PreviewScreen: React.FC = () => {
     }, [images]);
 
     // Helper to determine if any action is blocking interaction
-    const isBusy = isUploading || isGeneratingPdf || isPreparingUpload;
+    const isBusy = isGeneratingPdf || isPreparingUpload;
 
     return (
         <View style={styles.container}>
@@ -296,22 +272,20 @@ export const PreviewScreen: React.FC = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={[styles.submitButton, (isUploading || isPreparingUpload || images.length === 0) && styles.disabledButton]}
+                    style={[styles.submitButton, (isPreparingUpload || images.length === 0) && styles.disabledButton]}
                     onPress={handleSubmit}
                     disabled={isBusy || images.length === 0}
                     activeOpacity={0.8}
                 >
-                    {(isUploading || isPreparingUpload) ? (
+                    {isPreparingUpload ? (
                         <View style={styles.btnContent}>
                             <ActivityIndicator color="#fff" style={{ marginRight: 8 }} />
-                            <Text style={styles.submitText}>
-                                {isUploading ? `Uploading... ${uploadProgress}%` : 'Preparing...'}
-                            </Text>
+                            <Text style={styles.submitText}>Uploading...</Text>
                         </View>
                     ) : (
                         <View style={styles.btnContent}>
                             <Upload color="#fff" size={20} style={{ marginRight: 8 }} />
-                            <Text style={styles.submitText}>Upload PDF ({images.length} Pages)</Text>
+                            <Text style={styles.submitText}>Upload ({images.length} Pages)</Text>
                         </View>
                     )}
                 </TouchableOpacity>
