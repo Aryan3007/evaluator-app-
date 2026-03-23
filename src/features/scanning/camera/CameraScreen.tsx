@@ -142,8 +142,7 @@ const CameraScreen = () => {
     }, []);
 
     // ── Capture ──
-    // Uses takeSnapshot() which captures exactly what's visible in the viewfinder
-    // — no aspect ratio mismatch between preview and captured image
+    // takePhoto() for full-resolution sharpness — no crop, captures full sensor output
     const handleCapture = useCallback(async () => {
         if (!camera.current) return;
 
@@ -155,12 +154,13 @@ const CameraScreen = () => {
         isCapturing.current = true;
 
         try {
-            const snapshot: PhotoFile = await camera.current.takeSnapshot({
-                quality: 100,
+            const photo: PhotoFile = await camera.current.takePhoto({
+                flash: flash,
+                enableShutterSound: false,
             });
-            if (snapshot?.path) {
+            if (photo?.path) {
                 playSound('shutter');
-                const uri = `file://${snapshot.path}`;
+                const uri = `file://${photo.path}`;
                 setImages(prev => [...prev, uri]);
                 requestAnimationFrame(() => {
                     flatListRef.current?.scrollToEnd({ animated: true });
@@ -175,7 +175,7 @@ const CameraScreen = () => {
                 handleCapture();
             }
         }
-    }, [playSound]);
+    }, [playSound, flash]);
 
     // ── Next Copy (background PDF + upload) ──
     const handleNextCopy = useCallback(() => {
@@ -406,7 +406,7 @@ const CameraScreen = () => {
                         photo={true}
                         enableZoomGesture={true}
                         torch={flash}
-                        resizeMode="cover"
+                        resizeMode="contain"
                     />
 
                     {/* Top Bar */}

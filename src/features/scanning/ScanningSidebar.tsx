@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import {
     View,
     Text,
@@ -10,6 +10,7 @@ import {
     TouchableWithoutFeedback,
     StatusBar,
     Alert,
+    ActivityIndicator,
 } from 'react-native';
 import { ScanLine, X, LogOut, FileText } from 'lucide-react-native';
 import { PdfViewerModal } from './components/PdfViewerModal';
@@ -30,7 +31,7 @@ interface ScanningSidebarProps {
 const ScanningSidebar: React.FC<ScanningSidebarProps> = ({ onClose }) => {
     const dispatch = useAppDispatch();
     const insets = useSafeAreaInsets();
-    const { fileHistory } = useAppSelector((state) => state.scanning);
+    const { fileHistory, historyTotal, historyOffset, historyLoading } = useAppSelector((state) => state.scanning);
 
     // Animation Values
     const slideAnim = useRef(new Animated.Value(-SIDEBAR_WIDTH)).current;
@@ -78,6 +79,14 @@ const ScanningSidebar: React.FC<ScanningSidebarProps> = ({ onClose }) => {
     const handleLogout = () => {
         dispatch(logout());
     };
+
+    const PAGE_SIZE = 10;
+    const hasMore = historyOffset < historyTotal;
+
+    const handleLoadMore = useCallback(() => {
+        if (historyLoading || !hasMore) return;
+        dispatch(fetchFileHistory({ limit: PAGE_SIZE, offset: historyOffset }));
+    }, [dispatch, historyLoading, hasMore, historyOffset]);
 
 
     const renderItem = ({ item }: { item: any }) => {
@@ -165,12 +174,27 @@ const ScanningSidebar: React.FC<ScanningSidebarProps> = ({ onClose }) => {
                     keyExtractor={(item) => item.file_id}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={
+                        historyLoading && fileHistory.length > 0 ? (
+                            <View style={styles.loadingFooter}>
+                                <ActivityIndicator size="small" color={colors.primary} />
+                            </View>
+                        ) : null
+                    }
                     ListEmptyComponent={
-                        <View style={styles.emptyState}>
-                            <FileText size={48} color={colors.darkTextSecondary} style={{ marginBottom: 16, opacity: 0.5 }} />
-                            <Text style={styles.emptyText}>No recent uploads</Text>
-                            <Text style={styles.emptySubText}>Your scanned documents will appear here.</Text>
-                        </View>
+                        historyLoading ? (
+                            <View style={styles.emptyState}>
+                                <ActivityIndicator size="large" color={colors.primary} />
+                            </View>
+                        ) : (
+                            <View style={styles.emptyState}>
+                                <FileText size={48} color={colors.darkTextSecondary} style={{ marginBottom: 16, opacity: 0.5 }} />
+                                <Text style={styles.emptyText}>No recent uploads</Text>
+                                <Text style={styles.emptySubText}>Your scanned documents will appear here.</Text>
+                            </View>
+                        )
                     }
                 />
 
@@ -357,6 +381,10 @@ const styles = StyleSheet.create({
         color: colors.error,
         fontSize: 12,
         opacity: 0.8,
+    },
+    loadingFooter: {
+        paddingVertical: 16,
+        alignItems: 'center',
     },
 });
 

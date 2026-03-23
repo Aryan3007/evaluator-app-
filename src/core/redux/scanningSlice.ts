@@ -66,6 +66,9 @@ export interface ScanningState {
 
     // File History
     fileHistory: FileRecord[];
+    historyTotal: number;
+    historyOffset: number;
+    historyLoading: boolean;
 
     // UI state
     currentStep: 'input' | 'uploading' | 'success' | 'error';
@@ -79,6 +82,9 @@ const initialState: ScanningState = {
     uploadedFiles: [],
     paperCode: null,
     fileHistory: [],
+    historyTotal: 0,
+    historyOffset: 0,
+    historyLoading: false,
     currentStep: 'input',
 };
 
@@ -412,8 +418,24 @@ const scanningSlice = createSlice({
             });
 
         builder
+            .addCase(fetchFileHistory.pending, (state) => {
+                state.historyLoading = true;
+            })
             .addCase(fetchFileHistory.fulfilled, (state, action) => {
-                state.fileHistory = action.payload.data;
+                const { data, total, offset } = action.payload;
+                if (offset > 0) {
+                    // Append for pagination
+                    state.fileHistory = [...state.fileHistory, ...data];
+                } else {
+                    // Replace for fresh load / refresh
+                    state.fileHistory = data;
+                }
+                state.historyTotal = total;
+                state.historyOffset = offset + data.length;
+                state.historyLoading = false;
+            })
+            .addCase(fetchFileHistory.rejected, (state) => {
+                state.historyLoading = false;
             })
             .addCase(logout, () => initialState);
     },

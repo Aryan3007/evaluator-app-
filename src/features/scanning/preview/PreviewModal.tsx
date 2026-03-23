@@ -74,7 +74,17 @@ export const PreviewScreen: React.FC = () => {
     }, [initialImages]);
 
     const handleRemoveImage = (index: number) => {
-        setImages(prev => prev.filter((_, i) => i !== index));
+        setImages(prev => {
+            const updated = prev.filter((_, i) => i !== index);
+            if (updated.length === 0) {
+                navigation.navigate('CameraScreen', {
+                    subjectName,
+                    subjectCode,
+                    initialImages: [],
+                });
+            }
+            return updated;
+        });
     };
 
     const processImagesForPdf = async (sourceImages: string[]) => {
@@ -214,7 +224,7 @@ export const PreviewScreen: React.FC = () => {
                     <ChevronLeft color={colors.white} size={24} />
                 </TouchableOpacity>
                 <View style={styles.headerTextContainer}>
-                    <Text style={styles.headerTitle}>Review & Upload</Text>
+                    <Text style={styles.headerTitle}>Review </Text>
                     <Text style={styles.headerSubtitle}>{images.length} pages captured</Text>
                 </View>
                 {onAddMore ? (
